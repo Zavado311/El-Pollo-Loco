@@ -2,12 +2,16 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let currentKey;
+//const AUDIO_BACKGROUND = new Audio("../audio/theme.mp3");
 
 function init() {
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
     
     console.log("My Character is", world.character);
+
+    AUDIO_BACKGROUND.play();
+    AUDIO_BACKGROUND.volume = 0.15;
 }
 
 

@@ -1,9 +1,52 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Bangers';
+    src: url('./font/bangers-regular-webfont.woff2') format('woff2'); 
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Bangers', sans-serif;
+    background-image: url(img/background/mexicanDesert.jpeg);
+    background-position: center;
+    background-size: auto;
+    background-repeat: no-repeat;
+   
 }
 
 canvas {
     background-color: black;
+    display: block;
+}
+
+h1 {
+    color: gold;
+    text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705, -2px 2px 0px #c03705;
+    letter-spacing: 7px;
+    font-size: 72px;
+    padding-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+    h1 {
+        display: none;
+    }
 }

@@ -4,6 +4,7 @@ class MovableObject extends DrawableObject {
   speedY = 0;
   acceleration = 2.5;
   energy = 100;
+  coins = 0;
   lastHit = 0;
 
   applyGravity() {
@@ -19,6 +20,9 @@ class MovableObject extends DrawableObject {
     if (this instanceof ThrowableObject) {
       return true;
     } else {
+      if (this instanceof LittleChicken) {
+        return this.y < 340;
+      }
     return this.y < 150;
   }
 }
@@ -26,20 +30,24 @@ class MovableObject extends DrawableObject {
   // isColliding
   isColliding(mo) {
     return (
+      this.x < mo.x + mo.width &&
       this.x + this.width > mo.x &&
-      this.y + this.height > mo.y &&
-      this.x < mo.x &&
-      this.y < mo.y + mo.height
+      this.y < mo.y + mo.height &&
+      this.y + this.height > mo.y
     );
   }
 
   hit() {
-    this.energy -= 5;
+    this.energy -= 10;
     if (this.energy <= 0) {
       this.energy = 0;
     } else {
       this.lastHit = new Date().getTime();
     }
+  }
+
+  hitCoin() {
+    this.coins += 10;
   }
 
   isHurt() {
