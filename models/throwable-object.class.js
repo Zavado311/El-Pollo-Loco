@@ -1,5 +1,11 @@
 class ThrowableObject extends MovableObject {
   collision = false;
+  offset = {
+    top: 20,
+    bottom: 20,
+    left: 20,
+    right: 20,
+  };
 
   IMAGES_THROW = [
     "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
@@ -40,7 +46,9 @@ class ThrowableObject extends MovableObject {
   animate() {
     setInterval(() => {
       if (this.collision) {
-        setInterval(()=> {this.playAnimation(this.IMAGES_BROKEN);}, 1000/60)
+        setInterval(() => {
+          this.playAnimation(this.IMAGES_BROKEN);
+        }, 1000 / 60);
         this.y = this.y;
       } else {
         this.playAnimation(this.IMAGES_THROW);

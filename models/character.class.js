@@ -3,6 +3,13 @@ class Character extends MovableObject {
   height = 280;
   width = 120;
   speed = 10;
+  offset = {
+    top: 100,
+    bottom: 30,
+    left: 40,
+    right: 40,
+  };
+
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -49,7 +56,6 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-
     this.animate();
     this.applyGravity();
   }

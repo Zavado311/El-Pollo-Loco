@@ -1,16 +1,23 @@
 class Bottle extends MovableObject {
-    y = 325;
-    BOTTLES = [
-        "img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
-        "img/6_salsa_bottle/2_salsa_bottle_on_ground.png"
-    ];
+  y = 325;
+  offset = {
+    top: 10,
+    bottom: 10,
+    left: 30,
+    right: 30,
+  };
 
-    constructor() {
-        super();
+  BOTTLES = [
+    "img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
+    "img/6_salsa_bottle/2_salsa_bottle_on_ground.png",
+  ];
 
-        let randomBottle = Math.floor(Math.random() * this.BOTTLES.length); 
-        this.loadImage(this.BOTTLES[randomBottle]);
+  constructor() {
+    super();
 
-        this.x = 300 + Math.random() * 1500;
-    }
+    let randomBottle = Math.floor(Math.random() * this.BOTTLES.length);
+    this.loadImage(this.BOTTLES[randomBottle]);
+
+    this.x = 400 + Math.random() * (3000 - 400);
+  }
 }

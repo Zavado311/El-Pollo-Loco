@@ -6,6 +6,13 @@ class MovableObject extends DrawableObject {
   energy = 100;
   coins = 0;
   lastHit = 0;
+  offset = {
+    top: 120,
+    left: 120,
+    right: 150,
+    bottom: 150,
+  };
+  
 
   applyGravity() {
     setInterval(() => {
@@ -23,18 +30,22 @@ class MovableObject extends DrawableObject {
       if (this instanceof LittleChicken) {
         return this.y < 340;
       }
-    return this.y < 150;
+      return this.y < 150;
+    }
   }
-}
 
-  // isColliding
   isColliding(mo) {
+    console.log(mo);
     return (
-      this.x < mo.x + mo.width &&
-      this.x + this.width > mo.x &&
-      this.y < mo.y + mo.height &&
-      this.y + this.height > mo.y
+      this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+      this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+      this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     );
+  }
+
+  isAbouveGround(cha) {
+    return cha.y < 80;
   }
 
   hit() {

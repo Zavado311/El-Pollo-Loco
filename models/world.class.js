@@ -26,12 +26,15 @@ class World {
 
   run() {
     setInterval(() => {
-      this.checkCollisons();
       this.checkChickenHit();
+      this.checkThrowObjects();
+    }, 120);
+    setInterval(() => {
+      this.checkJumpCollision();
+      this.checkCollisions();
       this.checkCollecting();
       this.checkCollectingBottles();
-      this.checkThrowObjects();
-    }, 100);
+    }, 1000 / 60);
   }
 
   checkThrowObjects() {
@@ -48,19 +51,39 @@ class World {
     }
   }
 
-  checkCollisons() {
+  checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
-        this.character.hit();
+      if (
+        this.character.isColliding(enemy) // Charakter fällt nicht auf Gegner
+      ) {
+        this.character.hit(); // Charakter wird getroffen
         this.statusBar.setPercentage(this.character.energy);
       }
     });
   }
 
+
+  checkJumpCollision() {
+  this.level.enemies.forEach((enemy, i) => {
+    if (
+      this.character.isColliding(enemy) && // Kollision mit Gegner
+      this.character.isAboveGround() && this.character.speedY <= 0 // Charakter fällt auf Gegner
+    ) {
+      enemy.hit(); // Gegner wird getroffen
+    }
+    if (enemy.energy <= 0) {
+      this.level.enemies.splice(i, 1); // Entfernen, wenn Energie = 0
+    }
+  });
+}
+
+
+
   checkChickenHit() {
     this.throwableObjects.forEach((bottle, index) => {
       for (let i = this.level.enemies.length - 1; i >= 0; i--) {
         const enemy = this.level.enemies[i];
+        console.log(bottle.isColliding(enemy));
         if (bottle.isColliding(enemy) && !bottle.collision) {
           this.level.enemies[i].hit();
 
@@ -68,8 +91,6 @@ class World {
             //Falls mehr enemies werden ändern!!!!
             this.statusBarEndboss.setPercentageEndboss(-20);
           }
-
-          console.log(this.statusBarEndboss.percentage);
           bottle.collision = true;
           setTimeout(() => {
             this.throwableObjects.splice(index, 1);
@@ -104,6 +125,13 @@ class World {
       }
     });
   }
+
+  getAttentionOfEndboss() {
+   if (this.character.x >= 2800 ) {
+    this.level.enemies[7].hadFirstContact = true;
+   } 
+  }
+
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -148,6 +176,7 @@ class World {
     }
     mo.draw(this.ctx);
     mo.drawFrame(this.ctx);
+    mo.drawFrameOffset(this.ctx);
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);

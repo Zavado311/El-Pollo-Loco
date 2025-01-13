@@ -1,5 +1,13 @@
 class Coins extends MovableObject {
     y = 325;
+    offset = {
+      top: 30,
+      bottom: 30,
+      left: 30,
+      right: 30
+    };
+
+
     COINS = [
       "img/8_coin/coin_1.png",
       "img/8_coin/coin_2.png"
@@ -11,8 +19,6 @@ class Coins extends MovableObject {
       this.y = 100 + Math.random() * 200;
       this.loadImages(this.COINS);
       this.animate();
-      
-      
   }
 
   animate() {
