@@ -27,7 +27,6 @@ class StatusBarCoins extends DrawableObject {
   }
 
   resolveImageIndex() {
-    console.log("funktioniert", this.percentage);
     if (this.percentage >= 50) {
       return 5;
     } else if (this.percentage >= 40) {

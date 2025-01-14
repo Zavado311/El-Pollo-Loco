@@ -34,17 +34,38 @@ class World {
       this.checkCollisions();
       this.checkCollecting();
       this.checkCollectingBottles();
+      this.endGame();
     }, 1000 / 60);
+  }
+
+  endGame() {
+    if (youWinOrLost == "win") {
+      console.log("Gewonnen");
+    } else if (this.level.enemies[29] >= 0) {
+      console.log("Test2");
+    }
   }
 
   checkThrowObjects() {
     if (this.keyboard.D) {
-      if (this.statusBarBottle.percentage >= 10) {
+      let changeDirection = !this.character.otherDirection;
+
+      if (changeDirection && this.statusBarBottle.percentage >= 10) {
         let bottle = new ThrowableObject(
           this.character.x + 100,
-          this.character.y + 100
+          this.character.y + 100,
+          changeDirection
         );
+        this.throwableObjects.push(bottle);
+        this.statusBarBottle.setPercentageBottles(-10);
+      }
 
+      if (!changeDirection && this.statusBarBottle.percentage >= 10) {
+        let bottle = new ThrowableObject(
+          this.character.x - 100,
+          this.character.y + 100,
+          changeDirection
+        );
         this.throwableObjects.push(bottle);
         this.statusBarBottle.setPercentageBottles(-10);
       }
@@ -52,52 +73,55 @@ class World {
   }
 
   checkCollisions() {
-    this.level.enemies.forEach((enemy) => {
+    this.level.enemies.forEach((enemy, i) => {
       if (
-        this.character.isColliding(enemy) // Charakter fällt nicht auf Gegner
+        this.character.isColliding(enemy) &&
+        !this.level.enemies[i].isDeadEnemy
       ) {
-        this.character.hit(); // Charakter wird getroffen
+        this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
       }
     });
   }
 
-
   checkJumpCollision() {
-  this.level.enemies.forEach((enemy, i) => {
-    if (
-      this.character.isColliding(enemy) && // Kollision mit Gegner
-      this.character.isAboveGround() && this.character.speedY <= 0 // Charakter fällt auf Gegner
-    ) {
-      enemy.hit(); // Gegner wird getroffen
-    }
-    if (enemy.energy <= 0) {
-      this.level.enemies.splice(i, 1); // Entfernen, wenn Energie = 0
-    }
-  });
-}
-
-
+    this.level.enemies.forEach((enemy, i) => {
+      if (
+        this.character.isColliding(enemy) &&
+        this.character.isAboveGround() &&
+        this.character.speedY <= 0 &&
+        !this.level.enemies[i].isDeadEnemy &&
+        i !== 29
+      ) {
+        enemy.hit();
+        this.character.jump();
+      }
+      if (enemy.energy <= 0) {
+        enemy.isDeadEnemy = true;
+      }
+    });
+  }
 
   checkChickenHit() {
     this.throwableObjects.forEach((bottle, index) => {
       for (let i = this.level.enemies.length - 1; i >= 0; i--) {
         const enemy = this.level.enemies[i];
-        console.log(bottle.isColliding(enemy));
-        if (bottle.isColliding(enemy) && !bottle.collision) {
-          this.level.enemies[i].hit();
 
-          if (this.level.enemies[7]) {
-            //Falls mehr enemies werden ändern!!!!
+        if (bottle.isColliding(enemy) && !bottle.collision) {
+          bottle.collision = true;
+          if (!mute) {
+            AUDIO_BROKENBOTTLE.play();
+          }
+          this.level.enemies[i].hit();
+          if (this.level.enemies[29]) {
             this.statusBarEndboss.setPercentageEndboss(-20);
           }
-          bottle.collision = true;
           setTimeout(() => {
             this.throwableObjects.splice(index, 1);
-          }, 150);
+          }, 200);
 
           if (enemy.energy <= 0) {
-            this.level.enemies.splice(i, 1);
+            enemy.isDeadEnemy = true;
           }
           break;
         }
@@ -105,12 +129,12 @@ class World {
     });
   }
 
-  // vielleicht bei checkCollison dieses this.statusBar wegen Energy auch für das Hühnchen
-  // this.statusBarCoins.setPercentage(this.character.coins);
-
   checkCollecting() {
     this.level.coins.forEach((coins, index) => {
       if (this.character.isColliding(coins)) {
+        if (!mute) {
+          AUDIO_COINS.play();
+        }
         this.statusBarCoins.setPercentageCoins(10);
         this.level.coins.splice(index, 1);
       }
@@ -119,19 +143,18 @@ class World {
 
   checkCollectingBottles() {
     this.level.bottles.forEach((bottles, index) => {
-      if (this.character.isColliding(bottles)) {
+      if (
+        this.character.isColliding(bottles) &&
+        this.statusBarBottle.percentage < 50
+      ) {
+        if (!mute) {
+          AUDIO_BOTTLE.play();
+        }
         this.statusBarBottle.setPercentageBottles(10);
         this.level.bottles.splice(index, 1);
       }
     });
   }
-
-  getAttentionOfEndboss() {
-   if (this.character.x >= 2800 ) {
-    this.level.enemies[7].hadFirstContact = true;
-   } 
-  }
-
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -148,12 +171,12 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
 
-    this.addToMap(this.character);
-
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.bottles);
+
+    this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -193,5 +216,9 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  endGame() {
+    this.character.energy <= 0;
   }
 }

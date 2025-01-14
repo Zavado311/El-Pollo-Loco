@@ -1,52 +1,217 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 @font-face {
-    font-family: 'Bangers';
-    src: url('./font/bangers-regular-webfont.woff2') format('woff2'); 
+  font-family: "Bangers";
+  src: url("./font/bangers-regular-webfont.woff2") format("woff2");
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: 'Bangers', sans-serif;
-    background-image: url(img/background/mexicanDesert.jpeg);
-    background-position: center;
-    background-size: auto;
-    background-repeat: no-repeat;
-   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Bangers", sans-serif;
+  background-image: url(img/background/mexicanDesert.jpeg);
+  background-position: center;
+  background-size: auto;
+  background-repeat: no-repeat;
 }
 
 canvas {
-    background-color: black;
-    display: block;
+  background-color: black;
+  display: block;
 }
 
 h1 {
-    color: gold;
-    text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705, -2px 2px 0px #c03705;
-    letter-spacing: 7px;
-    font-size: 72px;
-    padding-top: 24px;
-    display: flex;
-    justify-content: center;
+  color: gold;
+  text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705,
+    -2px 2px 0px #c03705;
+  letter-spacing: 7px;
+  font-size: 88px;
+  padding: 72px 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 50px;
+}
+
+.settings {
+  width: 720px;
+  height: 480px;
+  padding-top: 10px;
+  padding-right: 10px;
+  justify-content: flex-end;
+  align-items: start;
+  display: flex;
+  position: absolute;
+  cursor: pointer;
+}
+
+
+
+.settings img {
+  height: 38px;
+}
+
+.sound {
+padding-right: 15px;
+}
+
+
+.playScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.startScreen {
+  height: 720px;
+  width: 480px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+}
+
+.startScreen img {
+  width: 720px;
+  height: 480px;
+}
+
+.playButton {
+  display: flex;
+  position: absolute;
+  align-self: start;
+  top: 160px;
+  color: gold;
+  text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705,
+    -2px 2px 0px #c03705;
+  letter-spacing: 7px;
+  font-size: 52px;
+  padding: 8px;
+  background-color: goldenrod;
+  border-radius: 10px;
+  transition: all 0.5s ease-in-out;
+  animation-name: getBigger;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+
+  cursor: pointer;
+}
+
+.descriptionIMG {
+  -webkit-filter: blur(2px) brightness(0.5);
+  filter: blur(6px) brightness(0.5);
+}
+
+.instructions {
+  display: none;
+}
+
+.description {
+  color: gold;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 180px;
+  font-size: 24px;
+}
+
+.keys {
+  display: flex;
+  flex-direction: column;
+  position: static;
+  padding-top: 32px;
+}
+
+.keys img {
+  height: 75px;
+  width: auto;
+}
+.overKeyDescription {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.keysToPlay {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.spaceBar {
+  height: 60px !important;
+  align-self: center;
+  border-radius: 25px;
+}
+
+.seperatorKeys {
+  align-self: center;
+}
+
+.dKey {
+  color: black;
+  background-color: white;
+  height: 46px;
+  align-self: center;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.startGameButton {
+  display: flex;
+  position: absolute;
+  align-self: center;
+  top: 315px;
+  color: gold;
+  text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705,
+    -2px 2px 0px #c03705;
+  letter-spacing: 7px;
+  font-size: 42px;
+  padding: 8px;
+  background-color: goldenrod;
+  border-radius: 10px;
+  transition: all 0.5s ease-in-out;
+  animation-name: getBigger;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+
+  cursor: pointer;
+}
+
+@keyframes getBigger {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @media only screen and (max-width: 720px) {
-    canvas {
-        width: 100%;
-    }
+  canvas {
+    width: 100%;
+  }
 }
 
 @media only screen and (max-height: 480px) {
-    canvas {
-        height: 100vh;
-    }
-    h1 {
-        display: none;
-    }
+  canvas {
+    height: 100vh;
+  }
+  h1 {
+    display: none;
+  }
 }

@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
   energy = 100;
   coins = 0;
   lastHit = 0;
+  isDeadEnemy = false;
   offset = {
     top: 120,
     left: 120,
@@ -13,7 +14,6 @@ class MovableObject extends DrawableObject {
     bottom: 150,
   };
   
-
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -35,7 +35,6 @@ class MovableObject extends DrawableObject {
   }
 
   isColliding(mo) {
-    console.log(mo);
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
       this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
@@ -49,7 +48,7 @@ class MovableObject extends DrawableObject {
   }
 
   hit() {
-    this.energy -= 10;
+    this.energy -= 2;
     if (this.energy <= 0) {
       this.energy = 0;
     } else {
@@ -65,6 +64,12 @@ class MovableObject extends DrawableObject {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
     return timepassed < 1;
+  }
+
+  isHurtAttackBack() {
+    let timepassed = new Date().getTime() - this.lastHit;
+    timepassed = timepassed / 1000;
+    return timepassed < 5;
   }
 
   isDead() {
