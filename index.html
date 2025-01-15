@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Pollo Loco!</title>
-    <link rel="icon" type="image/x-icon" href="img/3_enemies_chicken/chicken_small/1_walk/1_w.png">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="img/3_enemies_chicken/chicken_small/1_walk/1_w.png"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="models/drawable-object.class.js"></script>
     <script src="models/status-bar.class.js"></script>
@@ -13,27 +17,40 @@
     <script src="models/status-bar-endboss.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="models/character.class.js"></script>
+    <script src="models/endboss.class.js"></script>
     <script src="models/chicken.class.js"></script>
     <script src="models/little-chicken.class.js"></script>
     <script src="models/coins.class.js"></script>
     <script src="models/bottles.class.js"></script>
     <script src="models/cloud.class.js"></script>
-    <script src="models/world.class.js"></script>
     <script src="models/background-object.class.js"></script>
     <script src="models/keyboard.class.js"></script>
     <script src="models/level.class.js"></script>
     <script src="models/throwable-object.class.js"></script>
-    <script src="models/endboss.class.js"></script>
+    
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
+    <script src="models/world.class.js"></script>
     <script src="js/loadingGame.js"></script>
   </head>
   <body onload="">
     <h1>¡El Pollo Loco!</h1>
     <div id="fullscreen" class="playScreen">
       <div class="settings">
-        <div id="sound" class="sound" onclick="muteIt()"><img id="soundIMG" src="img/background/sound.svg" alt=""></div>
-        <div id="screenSizing" class="screenSizing" onclick="biggerScreenSize()"><img id="fullscreenSymbol" src="img/background/fullscreenSymbol.svg" alt=""></div>
+        <div id="sound" class="sound" onclick="muteIt()">
+          <img id="soundIMG" src="img/background/sound.svg" alt="" />
+        </div>
+        <div
+          id="screenSizing"
+          class="screenSizing"
+          onclick="biggerScreenSize()"
+        >
+          <img
+            id="fullscreenSymbol"
+            src="img/background/fullscreenSymbol.svg"
+            alt=""
+          />
+        </div>
       </div>
       <canvas id="canvas" width="720px" height="480"></canvas>
       <div id="startScreen" class="startScreen">
@@ -94,6 +111,23 @@
             ¡Listo!
           </div>
         </div>
+      </div>
+      <div id="victory" class="victory startScreen">
+        <img
+          id="victoryIMG"
+          src="img/9_intro_outro_screens/win/win_2.png"
+          alt=""
+        />
+        <div class="playAgain">
+          Nochmals spielen
+        </div>
+      </div>
+      <div id="lose" class="lose startScreen">
+        <img
+          id="loseIMG"
+          src="img/9_intro_outro_screens/game_over/game over!.png"
+          alt=""
+        />
       </div>
     </div>
     <div class="informationforSmartphones">

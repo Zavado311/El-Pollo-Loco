@@ -5,6 +5,7 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  youWinOrLost = null;
   statusBar = new StatusBar();
   statusBarCoins = new StatusBarCoins();
   statusBarBottle = new StatusBarBottle();
@@ -22,6 +23,7 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies[29].world = this;
   }
 
   run() {
@@ -38,11 +40,17 @@ class World {
     }, 1000 / 60);
   }
 
+  // Hier fortfahren!!!
+
   endGame() {
-    if (youWinOrLost == "win") {
-      console.log("Gewonnen");
-    } else if (this.level.enemies[29] >= 0) {
-      console.log("Test2");
+    if (this.youWinOrLost) {
+      if (this.youWinOrLost == "win") {
+        showVictory();
+        console.log("win");
+      } else if (this.youWinOrLost == "lost") {
+        showLose();
+        console.log("lost");
+      }
     }
   }
 
@@ -94,7 +102,6 @@ class World {
         i !== 29
       ) {
         enemy.hit();
-        this.character.jump();
       }
       if (enemy.energy <= 0) {
         enemy.isDeadEnemy = true;
@@ -216,9 +223,5 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
-  }
-
-  endGame() {
-    this.character.energy <= 0;
   }
 }

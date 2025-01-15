@@ -4,10 +4,10 @@ class LittleChicken extends MovableObject {
   height = 60;
   energy = 1;
   offset = {
-    top: 5,
-    bottom: 5,
-    left: 5,
-    right: 5,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   };
   IMAGES_WALKING = [
     "img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
@@ -35,14 +35,6 @@ class LittleChicken extends MovableObject {
         this.die();
       }
     }, 200);
-
-    setInterval(() => {
-      if (!this.isDeadEnemy) {
-        this.moveLeft();
-      } else {
-        this.die();
-      }
-    }, 1000 / 60);
 
     setInterval(() => {
       if (!this.isDeadEnemy) {

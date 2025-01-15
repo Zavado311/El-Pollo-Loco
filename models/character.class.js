@@ -1,5 +1,5 @@
 class Character extends MovableObject {
-  y = 60;
+  y = 150;
   height = 280;
   width = 120;
   speed = 10;
@@ -60,6 +60,7 @@ class Character extends MovableObject {
     this.applyGravity();
   }
 
+
   animate() {
     setInterval(() => {
       this.walking_sound.pause();
@@ -95,6 +96,7 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
+        this.world.youWinOrLost = "lost";
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.isAboveGround()) {

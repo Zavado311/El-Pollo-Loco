@@ -4,7 +4,7 @@ let keyboard = new Keyboard();
 let currentKey;
 let positionCharacter;
 let mute = false;
-let youWinOrLost = "open";
+
 const AUDIO_BACKGROUND = new Audio("../audio/theme.mp3");
 const AUDIO_COINS = new Audio("audio/coins.mp3");
 const AUDIO_BOTTLE = new Audio("audio/bottle.mp3");
@@ -27,13 +27,13 @@ function init() {
   }, 1000 / 60);
 }
 
-function muteIt(params) {
+function muteIt() {
   mute = true;
   document.getElementById("soundIMG").src = "img/background/noSound.svg";
   document.getElementById("sound").setAttribute("onclick", "unMuteIt()");
 }
 
-function unMuteIt(params) {
+function unMuteIt() {
   mute = false;
   document.getElementById("soundIMG").src = "img/background/sound.svg";
   document.getElementById("sound").setAttribute("onclick", "muteIt()");

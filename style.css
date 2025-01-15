@@ -20,6 +20,13 @@ body {
   background-repeat: no-repeat;
 }
 
+.playScreen {
+  height: 480px;
+  width: 720px;
+  background-color: black;
+  display: block;
+}
+
 canvas {
   background-color: black;
   display: block;
@@ -73,8 +80,8 @@ padding-right: 15px;
 }
 
 .startScreen {
-  height: 720px;
-  width: 480px;
+  width: 720px;
+  height: 480px;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -185,7 +192,6 @@ padding-right: 15px;
   animation-name: getBigger;
   animation-duration: 2s;
   animation-iteration-count: infinite;
-
   cursor: pointer;
 }
 
@@ -201,14 +207,24 @@ padding-right: 15px;
   }
 }
 
+.victory {
+  display: none;
+}
+
+.lose {
+  display: none;
+}
+
+
 @media only screen and (max-width: 720px) {
-  canvas {
+  playScreen {
     width: 100%;
+    
   }
 }
 
 @media only screen and (max-height: 480px) {
-  canvas {
+  playScreen {
     height: 100vh;
   }
   h1 {
