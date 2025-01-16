@@ -18,10 +18,10 @@ function init() {
 
   setInterval(() => {
     if (mute) {
-      AUDIO_BACKGROUND.pause(); 
+      AUDIO_BACKGROUND.pause();
     } else {
       if (AUDIO_BACKGROUND.paused) {
-        AUDIO_BACKGROUND.play(); 
+        AUDIO_BACKGROUND.play();
       }
     }
   }, 1000 / 60);

@@ -21,10 +21,13 @@ body {
 }
 
 .playScreen {
-  height: 480px;
-  width: 720px;
-  background-color: black;
-  display: block;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 720px;
+  max-height: 480px;
 }
 
 canvas {
@@ -32,7 +35,7 @@ canvas {
   display: block;
 }
 
-h1 {
+h1 a {
   color: gold;
   text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705,
     -2px 2px 0px #c03705;
@@ -41,6 +44,7 @@ h1 {
   padding: 72px 0 20px;
   display: flex;
   justify-content: center;
+  text-decoration: none;
 }
 
 .column {
@@ -50,28 +54,25 @@ h1 {
   left: 50px;
 }
 
-.settings {
+.inGameButtons {
   width: 720px;
   height: 480px;
   padding-top: 10px;
   padding-right: 10px;
+  display: flex;
   justify-content: flex-end;
   align-items: start;
-  display: flex;
   position: absolute;
   cursor: pointer;
 }
 
-
-
-.settings img {
+.inGameButtons img {
   height: 38px;
 }
 
 .sound {
-padding-right: 15px;
+  padding-right: 15px;
 }
-
 
 .playScreen {
   display: flex;
@@ -80,12 +81,13 @@ padding-right: 15px;
 }
 
 .startScreen {
-  width: 720px;
-  height: 480px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .startScreen img {
@@ -97,7 +99,7 @@ padding-right: 15px;
   display: flex;
   position: absolute;
   align-self: start;
-  top: 160px;
+  top: 40px;
   color: gold;
   text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705,
     -2px 2px 0px #c03705;
@@ -121,14 +123,16 @@ padding-right: 15px;
 
 .instructions {
   display: none;
+  justify-content: center;
 }
 
 .description {
+  width: 520px;
   color: gold;
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 180px;
+  top: 80px;
   font-size: 24px;
 }
 
@@ -215,19 +219,76 @@ padding-right: 15px;
   display: none;
 }
 
+.options img {
+  height: 60px;
+  position: absolute;
+  top: 65%;
+  cursor: pointer;
+}
 
-@media only screen and (max-width: 720px) {
-  playScreen {
+.options img:hover {
+  -webkit-filter: blur(0.5px) brightness(0.5);
+  filter: blur(0.5px) brightness(0.5);
+}
+
+.informationforSmartphones {
+  display: none;
+}
+
+.keysToPlay img {
+  height: 60px !important;
+  width: auto !important;
+}
+
+@media only screen and (max-width: 719px) {
+  canvas {
     width: 100%;
-    
+  }
+
+  .startScreen img {
+    width: 100%;
+    height: 100%;
+  }
+  .inGameButtons {
+    width: 100%;
   }
 }
 
 @media only screen and (max-height: 480px) {
-  playScreen {
+  canvas {
     height: 100vh;
   }
+
   h1 {
     display: none;
   }
+
+  .startScreen img {
+    width: 100%;
+    height: 100vh;
+  }
+  .playButton {
+    top: 5vh;
+  }
+
+  .description {
+    font-size: 20px;
+  }
+
+  .startGameButton {
+    top: 200px;
+  }
+  .repeatIcon {
+    height: 32px !important;
+  }
+
+  .inGameButtons {
+    width: 100%;
+    height: 100vh;
+  }
+
+.keys {
+  padding-top: 8px;
+}
+
 }

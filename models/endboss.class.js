@@ -62,11 +62,9 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-    this.speed = 0.5 + Math.random() * 0.5;
+    this.speed = 0.8 + Math.random() * 0.5;
 
     this.animate();
-    // this.checkAttacks();
-    //this.animateDeath();
   }
   animate() {
     let i = 0;

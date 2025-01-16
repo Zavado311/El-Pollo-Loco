@@ -20,7 +20,7 @@ class LittleChicken extends MovableObject {
     this.x = 500 + Math.random() * (9000 - 500);
     this.loadImages(this.IMAGES_WALKING);
 
-    this.speed = 0.15 + Math.random() * 0.5;
+    this.speed = 0.6 + Math.random() * 0.5;
 
     this.animate();
     this.applyGravity();

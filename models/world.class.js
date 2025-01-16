@@ -102,6 +102,7 @@ class World {
         i !== 29
       ) {
         enemy.hit();
+        this.character.jump();
       }
       if (enemy.energy <= 0) {
         enemy.isDeadEnemy = true;
