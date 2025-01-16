@@ -11,6 +11,8 @@ const AUDIO_BOTTLE = new Audio("audio/bottle.mp3");
 const AUDIO_BROKENBOTTLE = new Audio("audio/brokenBottle.mp3");
 
 AUDIO_BACKGROUND.volume = 0.007;
+AUDIO_BOTTLE.volume = 0.05;
+
 
 function init() {
   canvas = document.getElementById("canvas");
@@ -76,6 +78,64 @@ function exitFullscreen() {
     document.webkitExitFullscreen();
   }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("moveLeft").addEventListener("touchstart", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.LEFT = true;
+  });
+
+  document.getElementById("moveLeft").addEventListener("touchend", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.LEFT = false;
+  });
+
+  document.getElementById("moveRight").addEventListener("touchstart", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.RIGHT = true;
+  });
+
+  document.getElementById("moveRight").addEventListener("touchend", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.RIGHT = false;
+  });
+
+  document.getElementById("throwBottle").addEventListener("touchstart", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.D = true;
+  });
+
+  document.getElementById("throwBottle").addEventListener("touchend", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.D = false;
+  });
+
+  document.getElementById("jump").addEventListener("touchstart", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.SPACE = true;
+  });
+
+  document.getElementById("jump").addEventListener("touchend", (e) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    keyboard.SPACE = false;
+  });
+});
 
 window.addEventListener("keydown", (e) => {
   if (e.keyCode == 39) {

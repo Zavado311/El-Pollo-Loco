@@ -40,18 +40,20 @@ class World {
     }, 1000 / 60);
   }
 
-  // Hier fortfahren!!!
-
   endGame() {
     if (this.youWinOrLost) {
       if (this.youWinOrLost == "win") {
         showVictory();
-        console.log("win");
+        this.clearAllIntervals();
       } else if (this.youWinOrLost == "lost") {
         showLose();
-        console.log("lost");
+        this.clearAllIntervals();
       }
     }
+  }
+
+  clearAllIntervals() {
+    for (let i = 1; i < 9999; i++) window.clearInterval(i);
   }
 
   checkThrowObjects() {
@@ -59,6 +61,7 @@ class World {
       let changeDirection = !this.character.otherDirection;
 
       if (changeDirection && this.statusBarBottle.percentage >= 10) {
+        this.character.gotInteraction();
         let bottle = new ThrowableObject(
           this.character.x + 100,
           this.character.y + 100,
@@ -87,6 +90,7 @@ class World {
         !this.level.enemies[i].isDeadEnemy
       ) {
         this.character.hit();
+        this.character.gotInteraction();
         this.statusBar.setPercentage(this.character.energy);
       }
     });
@@ -188,7 +192,6 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
 
-    // Draw() wird immer wieder aufgerufen
     let self = this;
     requestAnimationFrame(function () {
       self.draw();

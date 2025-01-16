@@ -78,7 +78,7 @@ class Endboss extends MovableObject {
         }
         i++;
 
-        if (positionCharacter > 7400 && !this.hadFirstContact) {
+        if (positionCharacter > 7000 && !this.hadFirstContact) {
           i = 0;
           this.hadFirstContact = true;
         }
@@ -109,25 +109,4 @@ class Endboss extends MovableObject {
       }
     }, 100);
   }
-  /*
-  checkAttacks() {
-    setInterval(() => {
-      if (this.energy !== this.oldEnergy) {
-        this.playAnimation(this.IMAGES_HURT);
-        this.oldEnergy = this.energy;
-      }
-    }, 1000 / 60);
-  }*/
-  /*
-  animateDeath() {
-    let i = 0;
-    setInterval(() => {
-      if (i < 5 && this.isDeadEnemy) {
-        this.playAnimation(this.IMAGES_DEAD);
-        i++;
-      } else if (this.isDeadEnemy) {
-        this.loadImage("img/4_enemie_boss_chicken/5_dead/G26.png");
-      }
-    }, 250);
-  }*/
 }

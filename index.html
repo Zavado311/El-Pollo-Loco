@@ -27,31 +27,77 @@
     <script src="models/keyboard.class.js"></script>
     <script src="models/level.class.js"></script>
     <script src="models/throwable-object.class.js"></script>
-
     <script src="levels/level1.js"></script>
-    <script src="js/game.js"></script>
     <script src="models/world.class.js"></script>
     <script src="js/loadingGame.js"></script>
+    <script src="js/game.js"></script>
   </head>
   <body>
+    <div id="insertImprint" class="hidden">
+      <div class="bgblack">
+        <div class="dialogBox">
+          <div class="overContent">
+            <div class="titleSection">
+              <div class="titleImprint">Impressum</div>
+              <div onclick="closeImprint()" class="closeButton">X</div>
+            </div>
+            <div class="information">
+              Brian Wigger <br />
+              Matte 16 <br />
+              6025 Neudorf <br />
+              brian.wigger@bluewin.ch
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="imprint">
+      <div class="overImprintSymbol">
+        <img
+          id="imprint"
+          onclick="openImprint()"
+          src="img/background/impressumSymbol.svg"
+          alt=""
+        />
+      </div>
+    </div>
     <h1><a href="index.html">¡El Pollo Loco!</a></h1>
     <div id="fullscreen" class="playScreen">
       <div class="inGameButtons">
-        <div id="sound" class="sound" onclick="muteIt()">
-          <img id="soundIMG" src="img/background/sound.svg" alt="" />
+        <div class="inGameSettings">
+          <div id="sound" class="sound" onclick="muteIt()">
+            <img id="soundIMG" src="img/background/sound.svg" alt="" />
+          </div>
+          <div
+            id="screenSizing"
+            class="screenSizing"
+            onclick="biggerScreenSize()"
+          >
+            <img
+              id="fullscreenSymbol"
+              src="img/background/fullscreenSymbol.svg"
+              alt=""
+            />
+          </div>
         </div>
-        <div
-          id="screenSizing"
-          class="screenSizing"
-          onclick="biggerScreenSize()"
-        >
-          <img
-            id="fullscreenSymbol"
-            src="img/background/fullscreenSymbol.svg"
-            alt=""
-          />
+        <div class="controllPepe">
+          <div class="move">
+            <div id="moveLeft" class="moveLeft controllButton">
+              <img src="img/background/arrowLeft.svg" alt="" />
+            </div>
+            <div id="moveRight" class="moveRight controllButton">
+              <img src="img/background/arrowRight.svg" alt="" />
+            </div>
+          </div>
+          <div class="interact">
+            <div id="jump" class="jump controllButton">
+              <img src="img/background/arrowUp.svg" alt="" />
+            </div>
+            <div id="throwBottle" class="throwBottle controllButton">
+              <img src="img/background/bottleSalsa.svg" alt="" />
+            </div>
+          </div>
         </div>
-
       </div>
       <canvas id="canvas" width="720px" height="480"></canvas>
       <div id="startScreen" class="startScreen">

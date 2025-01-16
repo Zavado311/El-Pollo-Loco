@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
   energy = 100;
   coins = 0;
   lastHit = 0;
+  lastInteraction = 0;
   isDeadEnemy = false;
   offset = {
     top: 120,
@@ -72,6 +73,16 @@ class MovableObject extends DrawableObject {
     return timepassed < 5;
   }
 
+  gotInteraction() {
+    this.lastInteraction = new Date().getTime();
+  }
+
+  isActive() {
+    let timepassed = new Date().getTime() - this.lastInteraction;
+    timepassed = timepassed / 1000;
+    return timepassed;
+  }
+
   isDead() {
     return this.energy == 0;
   }
@@ -93,5 +104,13 @@ class MovableObject extends DrawableObject {
 
   jump() {
     this.speedY = 30;
+  }
+
+  isJumping() {
+    return this.speedY > 0;
+  }
+
+  isLanding() {
+    return this.y === 130;
   }
 }
