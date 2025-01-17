@@ -4,6 +4,8 @@ class Character extends MovableObject {
   width = 120;
   speed = 10;
   lastInteraction = 0;
+  world;
+  
   offset = {
     top: 100,
     bottom: 30,
@@ -99,11 +101,21 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
-  world;
-  walking_sound = new Audio("audio/walking.mp3");
-
+  /**
+   * Initializes a new instance of the Character class.
+   * Preloads all images and starts animations and gravity.
+   */
   constructor() {
     super().loadImage("img/2_character_pepe/2_walk/W-21.png");
+    this.preLoadAllImages();
+    this.animate();
+    this.applyGravity();
+  }
+
+  /**
+   * Preloads all character images for different states like walking, jumping, idle, etc.
+   */
+  preLoadAllImages() {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING_UP);
     this.loadImages(this.IMAGES_JUMPING_DOWN);
@@ -112,65 +124,193 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_LONGIDLE);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-    this.animate();
-    this.applyGravity();
   }
 
+  /**
+   * Starts the character animations and movement at regular intervals.
+   */
   animate() {
-    setInterval(() => {
-      this.walking_sound.pause();
-      if (!this.isDead()) {
-        if (
-          this.world.keyboard.RIGHT &&
-          this.x < this.world.level.level_end_x
-        ) {
-          this.moveRight();
-          this.gotInteraction();
-          this.otherDirection = false;
-          if (!mute) {
-            this.walking_sound.play();
-          }
-        }
-        if (this.world.keyboard.LEFT && this.x > 0) {
-          this.moveLeft();
-          this.gotInteraction();
-          this.otherDirection = true;
-          if (!mute) {
-            this.walking_sound.play();
-          }
-        }
+    setInterval(() => this.moveCharacter(), 1000 / 60);
+    setInterval(() => this.playCharacter(), 50);
+  }
 
-        if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-          this.jump();
-          this.gotInteraction();
-        }
-      }
+  /**
+   * Moves the character based on keyboard input.
+   * Controls movement to the right, left, and jumping.
+   * Also updates the camera position.
+   */
+  moveCharacter() {
+    AUDIO_WALKING.pause();
+    if (!this.isDead()) {
+      if (this.canMoveRight()) this.moveRight();
+      if (this.canMoveLeft()) this.moveLeft();
+      if (this.canJump()) this.jump();
+    }
+    this.world.camera_x = -this.x + 100;
+    positionCharacter = this.x;
+  }
 
-      this.world.camera_x = -this.x + 100;
+  /**
+   * Checks if the character can move right.
+   * @returns {boolean} True if the character can move right.
+   */
+  canMoveRight() {
+    return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+  }
 
-      positionCharacter = this.x;
-    }, 1000 / 60);
+  /**
+   * Moves the character to the right.
+   * Plays walking sound and updates the direction.
+   */
+  moveRight() {
+    super.moveRight();
+    this.gotInteraction();
+    this.otherDirection = false;
+    if (!mute) {
+      AUDIO_WALKING.play();
+    }
+  }
 
-    setInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-        this.world.youWinOrLost = "lost";
-      } else if (this.isActive() > 3) {
-        this.playAnimation(this.IMAGES_LONGIDLE);
-      } else if (this.isActive() > 2) {
-        this.playAnimation(this.IMAGES_IDLE);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.isAboveGround()) {
-        const animation = this.isJumping()
-          ? this.IMAGES_JUMPING_UP
-          : this.IMAGES_JUMPING_DOWN;
-        this.playAnimation(animation);
-      } else if (this.isLanding()) {
-        this.playAnimation(this.IMAGES_JUMPING_LANDING);
-      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        this.playAnimation(this.IMAGES_WALKING);
-      }
-    }, 50);
+  /**
+   * Checks if the character can move left.
+   * @returns {boolean} True if the character can move left.
+   */
+  canMoveLeft() {
+    return this.world.keyboard.LEFT && this.x > 0;
+  }
+
+  /**
+   * Moves the character to the left.
+   * Plays walking sound and updates the direction.
+   */
+  moveLeft() {
+    super.moveLeft();
+    this.gotInteraction();
+    this.otherDirection = true;
+    if (!mute) {
+      AUDIO_WALKING.play();
+    }
+  }
+
+  /**
+   * Checks if the character can jump.
+   * @returns {boolean} True if the character can jump.
+   */
+  canJump() {
+    return this.world.keyboard.SPACE && !this.isAboveGround();
+  }
+
+  /**
+   * Makes the character jump.
+   */
+  jump() {
+    super.jump();
+    this.gotInteraction();
+  }
+
+  /**
+   * Plays the appropriate animation based on the character's state (e.g., walking, jumping, dead).
+   */
+  playCharacter() {
+    if (this.isDead()) {
+      this.playDead();
+    } else if (this.isActive() > 3) {
+      this.playSleeping();
+    } else if (this.isActive() > 2) {
+      this.playAnimation(this.IMAGES_IDLE);
+    } else if (this.isHurt() < 1) {
+      this.playHurt();
+    } else if (this.isAboveGround()) {
+      this.playJump();
+    } else if (this.isLanding()) {
+      this.playAnimation(this.IMAGES_JUMPING_LANDING);
+    } else if (this.isMoving()) {
+      this.playAnimation(this.IMAGES_WALKING);
+    } else {
+      this.playIdle();
+    }
+  }
+
+  /**
+   * Checks if the character has moved recently.
+   * @returns {number} The time in seconds since the last interaction.
+   */
+  isActive() {
+    let elapsed = new Date().getTime() - this.lastInteraction;
+    return elapsed / 1000;
+  }
+
+  /**
+   * Updates the last interaction time to the current time.
+   */
+  gotInteraction() {
+    this.lastInteraction = new Date().getTime();
+  }
+
+  /**
+   * Plays the dead animation for the character.
+   */
+  playDead() {
+    this.playAnimation(this.IMAGES_DEAD);
+  }
+
+  /**
+   * Plays the hurt animation for the character.
+   */
+  playHurt() {
+    this.playAnimation(this.IMAGES_HURT);
+  }
+
+  /**
+   * Plays the jumping animation for the character.
+   */
+  playJump() {
+    this.playAnimation(this.IMAGES_JUMPING_UP);
+  }
+
+  /**
+   * Plays the idle animation for the character.
+   */
+  playIdle() {
+    this.playAnimation(this.IMAGES_IDLE);
+  }
+
+  /**
+   * Plays the sleeping animation for the character.
+   */
+  playSleeping() {
+    this.playAnimation(this.IMAGES_LONGIDLE);
+  }
+
+  /**
+   * Checks if the character is landing after a jump.
+   * @returns {boolean} True if the character is landing.
+   */
+  isLanding() {
+    return this.speedY < 0.5 && this.speedY > 0;
+  }
+
+  /**
+   * Checks if the character is hurt (no more health).
+   * @returns {number} The character's health.
+   */
+  isHurt() {
+    return this.energy;
+  }
+
+  /**
+   * Checks if the character is moving either left or right.
+   * @returns {boolean} True if the character is moving.
+   */
+  isMoving() {
+    return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
+  }
+
+  /**
+   * Checks if the character is dead (no more energy).
+   * @returns {boolean} True if the character is dead.
+   */
+  isDead() {
+    return this.energy <= 0;
   }
 }

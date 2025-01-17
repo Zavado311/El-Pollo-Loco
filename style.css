@@ -224,6 +224,7 @@ h1 a {
 
 .startGameButton {
   display: flex;
+  justify-content: center;
   position: absolute;
   align-self: center;
   top: 315px;
@@ -240,6 +241,39 @@ h1 a {
   animation-duration: 2s;
   animation-iteration-count: infinite;
   cursor: pointer;
+}
+
+.endGame {
+  display: flex;
+  justify-content: center;
+}
+
+.repeatOrHome {
+  display: flex;
+  position: absolute;
+  align-self: center;
+  vertical-align: middle;
+  text-align: center;
+  gap: 80px;
+}
+
+.optionButtons {
+  top: 315px;
+  color: gold;
+  text-shadow: 4px 4px 0px #c03705, -2px -2px 0px #c03705, 2px -2px 0px #c03705,
+    -2px 2px 0px #c03705;
+  letter-spacing: 7px;
+  font-size: 42px;
+  padding: 8px;
+  background-color: goldenrod;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.optionButtons:hover {
+  transform: scale(1.2);
 }
 
 @keyframes getBigger {
@@ -343,6 +377,13 @@ h1 a {
 .titleImprint {
   font-weight: bold;
   letter-spacing: 3px;
+}
+
+.repeatOrHome {
+  display: flex;
+  position: absolute;
+  align-self: center;
+  top: 315px;
 }
 
 @media only screen and (max-width: 719px) {

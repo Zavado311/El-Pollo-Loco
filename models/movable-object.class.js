@@ -64,13 +64,7 @@ class MovableObject extends DrawableObject {
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
-    return timepassed < 1;
-  }
-
-  isHurtAttackBack() {
-    let timepassed = new Date().getTime() - this.lastHit;
-    timepassed = timepassed / 1000;
-    return timepassed < 5;
+    return timepassed;
   }
 
   gotInteraction() {

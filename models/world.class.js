@@ -59,28 +59,42 @@ class World {
   checkThrowObjects() {
     if (this.keyboard.D) {
       let changeDirection = !this.character.otherDirection;
-
-      if (changeDirection && this.statusBarBottle.percentage >= 10) {
-        this.character.gotInteraction();
-        let bottle = new ThrowableObject(
-          this.character.x + 100,
-          this.character.y + 100,
-          changeDirection
-        );
-        this.throwableObjects.push(bottle);
-        this.statusBarBottle.setPercentageBottles(-10);
+      if (this.possibleThrowToRight(changeDirection)) {
+        this.throwBottleToRight(changeDirection);
       }
-
-      if (!changeDirection && this.statusBarBottle.percentage >= 10) {
-        let bottle = new ThrowableObject(
-          this.character.x - 100,
-          this.character.y + 100,
-          changeDirection
-        );
-        this.throwableObjects.push(bottle);
-        this.statusBarBottle.setPercentageBottles(-10);
+      if (this.possibleThrowToLeft(changeDirection)) {
+        this.throwBottleToLeft(changeDirection);
       }
     }
+  }
+
+  possibleThrowToRight(changeDirection) {
+    return changeDirection && this.statusBarBottle.percentage >= 10;
+  }
+
+  throwBottleToRight(changeDirection) {
+    this.character.gotInteraction();
+    let bottle = new ThrowableObject(
+      this.character.x + 100,
+      this.character.y + 100,
+      changeDirection
+    );
+    this.throwableObjects.push(bottle);
+    this.statusBarBottle.setPercentageBottles(-10);
+  }
+
+  possibleThrowToLeft(changeDirection) {
+    return !changeDirection && this.statusBarBottle.percentage >= 10;
+  }
+
+  throwBottleToLeft(changeDirection) {
+    let bottle = new ThrowableObject(
+      this.character.x - 100,
+      this.character.y + 100,
+      changeDirection
+    );
+    this.throwableObjects.push(bottle);
+    this.statusBarBottle.setPercentageBottles(-10);
   }
 
   checkCollisions() {
@@ -175,7 +189,7 @@ class World {
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
     this.ctx.translate(-this.camera_x, 0);
-    // ------ Space for fixed Objects ----------
+
     this.addToMap(this.statusBar);
     this.addToMap(this.statusBarCoins);
     this.addToMap(this.statusBarBottle);

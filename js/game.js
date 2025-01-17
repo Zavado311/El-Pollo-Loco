@@ -5,15 +5,6 @@ let currentKey;
 let positionCharacter;
 let mute = false;
 
-const AUDIO_BACKGROUND = new Audio("../audio/theme.mp3");
-const AUDIO_COINS = new Audio("audio/coins.mp3");
-const AUDIO_BOTTLE = new Audio("audio/bottle.mp3");
-const AUDIO_BROKENBOTTLE = new Audio("audio/brokenBottle.mp3");
-
-AUDIO_BACKGROUND.volume = 0.007;
-AUDIO_BOTTLE.volume = 0.05;
-
-
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
@@ -63,10 +54,8 @@ function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
   } else if (element.msRequestFullscreen) {
-    // for IE11 (remove June 15, 2022)
     element.msRequestFullscreen();
   } else if (element.webkitRequestFullscreen) {
-    // iOS Safari
     element.webkitRequestFullscreen();
   }
 }

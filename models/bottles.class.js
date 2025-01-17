@@ -14,10 +14,8 @@ class Bottle extends MovableObject {
 
   constructor() {
     super();
-
     let randomBottle = Math.floor(Math.random() * this.BOTTLES.length);
     this.loadImage(this.BOTTLES[randomBottle]);
-
     this.x = 500 + Math.random() * (7800 - 500);
   }
 }
