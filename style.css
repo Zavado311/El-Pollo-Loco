@@ -307,8 +307,18 @@ h1 a {
   filter: blur(0.5px) brightness(0.5);
 }
 
-.informationforSmartphones {
+.changeToLandscape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: none;
+  background-color: black;
+  color: #fff;
+  font-size: 24px;
+  align-items: center;
+  justify-content: center; 
 }
 
 .keysToPlay img {
@@ -398,6 +408,11 @@ h1 a {
   .inGameButtons {
     width: 100%;
   }
+
+.changeToLandscape {
+  display: flex;
+}
+
 }
 
 @media only screen and (max-height: 480px) {

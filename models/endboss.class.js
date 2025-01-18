@@ -88,7 +88,7 @@ class Endboss extends MovableObject {
    * - To check for interactions such as hurt or death.
    */
   animate() {
-    setInterval(() => this.animationIfFirstContact(), 150);
+    setInterval(() => this.animationIfFirstContact(), 100);
     setInterval(() => this.moveEndboss(), 1000 / 60);
     setInterval(() => this.checkTheInteraction(), 100);
   }
@@ -99,15 +99,18 @@ class Endboss extends MovableObject {
    * is confirmed. After the first contact, it switches to movement.
    */
   animationIfFirstContact() {
-    console.log(this.isDeadEnemy);
+   console.log("hadFirstContact", this.hadFirstContact);
+   console.log("positonCharacter", positionCharacter)
+   
+ 
     if (!this.isDeadEnemy) {
+      if (this.checkFirstContact()) {
+        this.gotFirstContact();
+      }
       if (this.showFirstContactAnimation()) {
         this.playAnimation(this.IMAGES_ALERT);
       } else if (this.hadFirstContact) {
         this.showMovement();
-      }
-      if (this.checkFirstContact()) {
-        this.gotFirstContact();
       }
     }
     this.i++;
@@ -136,7 +139,7 @@ class Endboss extends MovableObject {
    * @returns {boolean} - True if first contact is triggered, false otherwise.
    */
   checkFirstContact() {
-    return (this.positionCharacter > 6500 && !this.hadFirstContact);
+    return (positionCharacter > 6500 && !this.hadFirstContact);
   }
 
   /**
