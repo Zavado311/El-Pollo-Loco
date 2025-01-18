@@ -5,7 +5,6 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-  youWinOrLost = null;
   statusBar = new StatusBar();
   statusBarCoins = new StatusBarCoins();
   statusBarBottle = new StatusBarBottle();
@@ -23,9 +22,9 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.setWorld();
     this.draw();
     this.run();
+    this.setWorld();
   }
 
   /**
@@ -62,11 +61,11 @@ class World {
    * Shows the appropriate screen (victory or loss) and clears all intervals.
    */
   endGame() {
-    if (this.youWinOrLost) {
-      if (this.youWinOrLost == "win") {
+    if (youWinOrLost) {
+      if (youWinOrLost == "win") {
         showVictory();
         this.clearAllIntervals();
-      } else if (this.youWinOrLost == "lost") {
+      } else if (youWinOrLost == "lost") {
         showLose();
         this.clearAllIntervals();
       }

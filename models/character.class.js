@@ -253,7 +253,7 @@ class Character extends MovableObject {
    */
   playDead() {
     this.playAnimation(this.IMAGES_DEAD);
-    this.world.youWinOrLost = "lost";
+    youWinOrLost = "lost";
   }
 
   /**

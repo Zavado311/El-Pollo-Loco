@@ -101,7 +101,6 @@ class Endboss extends MovableObject {
    * is confirmed. After the first contact, it switches to movement.
    */
   animationIfFirstContact() {
-console.log("Es funktioniert", this.world.youWinOrLost)
     if (!this.isDeadEnemy) {
       if (this.checkFirstContact()) {
         this.gotFirstContact();
@@ -205,7 +204,7 @@ console.log("Es funktioniert", this.world.youWinOrLost)
   checkTheInteraction() {
     if (this.isDead()) {
       this.playAnimation(this.IMAGES_DEAD);
-      this.world.youWinOrLost = "win";
+      youWinOrLost = "win";
     } else if (this.isHurt() < 1) {
       if (!mute) {
         AUDIO_CHICKENCACKLE.play();
