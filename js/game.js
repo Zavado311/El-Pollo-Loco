@@ -4,7 +4,7 @@ let keyboard = new Keyboard();
 let currentKey;
 let positionCharacter;
 let mute = false;
-let youWinOrLost = null;
+let youWinOrLost;
 
 /**
  * Initializes the world and the canvas, starts the background music.
