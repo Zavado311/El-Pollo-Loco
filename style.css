@@ -314,11 +314,15 @@ h1 a {
   right: 0;
   bottom: 0;
   display: none;
+  align-items: center;
+  justify-content: center;
   background-color: black;
   color: #fff;
   font-size: 24px;
-  align-items: center;
-  justify-content: center; 
+  z-index: 99999;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .keysToPlay img {
@@ -342,6 +346,18 @@ h1 a {
   display: none;
 }
 
+.titleImprint {
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-size: 36px;
+  padding-bottom: 8px;
+}
+
+.information {
+  max-width: 480px;
+  font-size: 24px;
+}
+
 .bgblack {
   height: 100vh;
   width: 100vw;
@@ -363,6 +379,41 @@ h1 a {
   background-color: goldenrod;
   padding: 25px;
   border-radius: 25px;
+  min-width: 320px;
+  height: 400px;
+  margin: 20px;
+}
+
+.overContent {
+  margin: 10px;
+  max-height: 380px;
+  overflow: auto;
+}
+
+/* Scrollbar Design */
+.overContent::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.overContent::-webkit-scrollbar-track {
+  background-color: #222; /* Dunkler Hintergrund für den Track */
+  border-radius: 10px;
+}
+
+.overContent::-webkit-scrollbar-thumb {
+  background-color: yellow; /* Goldene Farbe für den Thumb */
+  border-radius: 10px;
+  border: 3px solid #333; /* Dünner dunkler Rand um den Thumb */
+  transition: background-color 0.3s ease-in-out;
+}
+
+.overContent::-webkit-scrollbar-thumb:hover {
+  background-color: #c5a300; /* Helleres Gold bei Hover */
+}
+
+.overContent::-webkit-scrollbar-corner {
+  background-color: #222; /* Gleicher Hintergrund wie der Track */
 }
 
 .titleSection {
@@ -372,6 +423,8 @@ h1 a {
 }
 
 .closeButton {
+  margin-left: 8px;
+  align-self: flex-start;
   border: 2px solid black;
   border-radius: 50px;
   padding: 5px;
@@ -383,11 +436,6 @@ h1 a {
   padding: 5px;
 }
 
-.titleImprint {
-  font-weight: bold;
-  letter-spacing: 3px;
-}
-
 .repeatOrHome {
   display: flex;
   position: absolute;
@@ -396,6 +444,23 @@ h1 a {
 }
 
 @media only screen and (max-width: 719px) {
+  .playScreen {
+    display: none;
+  }
+
+  .changeToLandscape {
+    display: flex;
+  }
+}
+
+@media (max-width: 719px) and (orientation: landscape) {
+  .playScreen {
+    display: flex;
+  }
+
+  .changeToLandscape {
+    display: none;
+  }
   canvas {
     width: 100%;
   }
@@ -409,10 +474,33 @@ h1 a {
     width: 100%;
   }
 
-.changeToLandscape {
-  display: flex;
+  .dialogBox {
+    height: 80vh;
+  }
+
+  .overContent {
+    height: 100%;
+  }
 }
 
+@media (max-width: 700px) and (orientation: landscape) {
+  .inGameButtons {
+    width: 100%;
+  }
+
+  .repeatOrHome {
+    top: 70%;
+  }
+
+  .optionButtons {
+    font-size: 30px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1366px) {
+  .controllPepe {
+    display: flex;
+  }
 }
 
 @media only screen and (max-height: 480px) {

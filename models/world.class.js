@@ -13,21 +13,24 @@ class World {
   throwableObjects = [];
 
   /**
-   * Initializes a new instance of the World class, sets up the canvas, context, keyboard inputs, and runs the game.
-   * @param {HTMLCanvasElement} canvas - The canvas element where the game will be drawn.
-   * @param {Object} keyboard - An object representing the state of the keyboard inputs.
+   * Constructor method for initializing the game world.
+   * Sets up the canvas context, keyboard input, and starts the game loop.
+   *
+   * @param {HTMLCanvasElement} canvas - The HTML canvas element to draw the game.
+   * @param {Keyboard} keyboard - The keyboard object to handle player input.
    */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.draw();
     this.setWorld();
+    this.draw();
     this.run();
   }
 
   /**
-   * Sets the world for the character and the end boss (enemy at index 29) so they can access the world context.
+   * Sets the world for the character and enemies.
+   * Links the world context to the character and a specific enemy.
    */
   setWorld() {
     this.character.world = this;
@@ -35,7 +38,10 @@ class World {
   }
 
   /**
-   * Starts the main game loop, setting intervals for checking collisions, object interactions, and updating the game state.
+   * Starts the game loop by setting up intervals for various game checks.
+   *
+   * - Checks for chicken hits and object throws every 120ms.
+   * - Checks for collisions, collecting items, and game ending conditions every frame (60fps).
    */
   run() {
     setInterval(() => {
@@ -52,7 +58,8 @@ class World {
   }
 
   /**
-   * Checks if the game has been won or lost and triggers the appropriate actions.
+   * Ends the game based on the current win or loss status.
+   * Shows the appropriate screen (victory or loss) and clears all intervals.
    */
   endGame() {
     if (this.youWinOrLost) {
@@ -67,14 +74,16 @@ class World {
   }
 
   /**
-   * Clears all running intervals to stop the game loop.
+   * Clears all intervals that are currently set.
+   * Loops through all possible interval IDs and clears them.
    */
   clearAllIntervals() {
     for (let i = 1; i < 9999; i++) window.clearInterval(i);
   }
 
   /**
-   * Checks if the player pressed the throw button (D) and handles throwing bottles to the left or right.
+   * Checks if the character can throw objects and triggers the throw action.
+   * It checks the keyboard input for the 'D' key.
    */
   checkThrowObjects() {
     if (this.keyboard.D) {
@@ -89,17 +98,19 @@ class World {
   }
 
   /**
-   * Determines if throwing a bottle to the right is possible.
-   * @param {boolean} changeDirection - Indicates if the character is facing right.
-   * @returns {boolean} - True if a bottle can be thrown to the right.
+   * Determines if the character can throw a bottle to the right.
+   * @param {boolean} changeDirection - Whether the character is facing the right direction.
+   * @returns {boolean} - Returns true if throwing to the right is possible.
    */
   possibleThrowToRight(changeDirection) {
     return changeDirection && this.statusBarBottle.percentage >= 10;
   }
 
   /**
-   * Throws a bottle to the right and decreases the number of bottles in the status bar.
-   * @param {boolean} changeDirection - Indicates if the character is facing right.
+   * Throws a bottle to the right if possible.
+   * Creates a new throwable object and adds it to the list of throwable objects.
+   * Reduces the percentage of bottles in the status bar.
+   * @param {boolean} changeDirection - Whether the character is facing the right direction.
    */
   throwBottleToRight(changeDirection) {
     this.character.gotInteraction();
@@ -113,17 +124,19 @@ class World {
   }
 
   /**
-   * Determines if throwing a bottle to the left is possible.
-   * @param {boolean} changeDirection - Indicates if the character is facing left.
-   * @returns {boolean} - True if a bottle can be thrown to the left.
+   * Determines if the character can throw a bottle to the left.
+   * @param {boolean} changeDirection - Whether the character is facing the left direction.
+   * @returns {boolean} - Returns true if throwing to the left is possible.
    */
   possibleThrowToLeft(changeDirection) {
     return !changeDirection && this.statusBarBottle.percentage >= 10;
   }
 
   /**
-   * Throws a bottle to the left and decreases the number of bottles in the status bar.
-   * @param {boolean} changeDirection - Indicates if the character is facing left.
+   * Throws a bottle to the left if possible.
+   * Creates a new throwable object and adds it to the list of throwable objects.
+   * Reduces the percentage of bottles in the status bar.
+   * @param {boolean} changeDirection - Whether the character is facing the left direction.
    */
   throwBottleToLeft(changeDirection) {
     this.character.gotInteraction();
@@ -137,7 +150,8 @@ class World {
   }
 
   /**
-   * Checks for collisions between the character and enemies, applying damage when necessary.
+   * Checks if the character collides with any enemies.
+   * If a collision occurs, the character takes damage and the energy status bar is updated.
    */
   checkCollisions() {
     this.level.enemies.forEach((enemy, i) => {
@@ -153,7 +167,9 @@ class World {
   }
 
   /**
-   * Checks if the character collides with an enemy while jumping, causing damage to the enemy.
+   * Checks if the character collides with enemies while jumping.
+   * If the character is above an enemy and falling, the enemy is hit and the character jumps again.
+   * If the enemy's energy reaches zero, it is marked as dead.
    */
   checkJumpCollision() {
     this.level.enemies.forEach((enemy, i) => {
@@ -177,7 +193,8 @@ class World {
   }
 
   /**
-   * Checks if any thrown bottles hit an enemy and handles the collision logic.
+   * Checks for collisions between throwable bottles and enemies.
+   * If a bottle hits an enemy, it triggers the corresponding collision handling.
    */
   checkChickenHit() {
     this.throwableObjects.forEach((bottle, index) => {
@@ -242,7 +259,9 @@ class World {
   }
 
   /**
-   * Checks if the character collects any coins and updates the coin status bar.
+   * Checks if the character collides with any coins and collects them.
+   * If a collision occurs, the character collects the coin, plays a sound effect,
+   * increases the coin count in the status bar by 10, and removes the coin from the level.
    */
   checkCollecting() {
     this.level.coins.forEach((coins, index) => {
@@ -257,7 +276,10 @@ class World {
   }
 
   /**
-   * Checks if the character collects any bottles and updates the bottle status bar.
+   * Checks if the character collides with any bottles and collects them.
+   * If a collision occurs, the character collects the bottle, plays a sound effect,
+   * increases the bottle count in the status bar by 10 (if it's below 50%),
+   * and removes the bottle from the level.
    */
   checkCollectingBottles() {
     this.level.bottles.forEach((bottles, index) => {
@@ -275,7 +297,10 @@ class World {
   }
 
   /**
-   * Draws all the game objects and background elements on the canvas.
+   * Draws the entire game scene on the canvas.
+   * It clears the canvas, draws the background objects, draws the status bars,
+   * and draws the main game objects (such as the character and enemies).
+   * Finally, it requests the next frame for continuous animation.
    */
   draw() {
     this.clearCanvas();
@@ -286,7 +311,8 @@ class World {
   }
 
   /**
-   * Clears the entire canvas.
+   * Clears the entire canvas by wiping it clean.
+   * This is typically used before drawing a new frame.
    */
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -303,25 +329,28 @@ class World {
   }
 
   /**
-   * Draws the status bars and text information on the screen.
+   * Draws the status bars and related UI elements.
    */
   drawStatusBars() {
     this.addToMap(this.statusBar);
-    this.addToMap(this.statusBarEndboss);
-    this.addToMap(this.statusBarBottle);
     this.addToMap(this.statusBarCoins);
-    this.addToMap(this.character);
+    this.addToMap(this.statusBarBottle);
+    this.addToMap(this.statusBarEndboss);
   }
 
   /**
-   * Draws the main game objects like enemies and throwable objects, applying camera translation.
+   * Draws the main game objects like enemies, throwable objects, coins, bottles, and the character.
    */
   drawMainObjects() {
     this.ctx.translate(this.camera_x, 0);
-    this.addObjectsToMap(this.throwableObjects);
+
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.bottles);
+
+    this.addToMap(this.character);
+
     this.ctx.translate(-this.camera_x, 0);
   }
 
@@ -336,8 +365,9 @@ class World {
   }
 
   /**
-   * Fügt eine Liste von Objekten zur Karte hinzu, indem jedes Objekt gezeichnet wird.
-   * @param {Object[]} objects - Ein Array von Objekten, die zur Karte hinzugefügt werden sollen.
+   * Adds multiple objects to the map by calling the `addToMap` method for each object.
+   *
+   * @param {Array} objects - The array of objects to be added to the map.
    */
   addObjectsToMap(objects) {
     objects.forEach((o) => {
@@ -346,17 +376,17 @@ class World {
   }
 
   /**
-   * Fügt ein einzelnes Objekt zur Karte hinzu und zeichnet es.
-   * Wenn das Objekt die Eigenschaft `otherDirection` hat, wird das Bild gespiegelt.
-   * @param {Object} mo - Das Objekt, das zur Karte hinzugefügt und gezeichnet wird.
+   * Adds a single object to the map by drawing it on the canvas and applying transformations
+   * if the object is facing the other direction.
+   *
+   * @param {Object} mo - The object to be added to the map. The object should have
+   * properties such as `otherDirection`, `draw()`, `drawFrame()`, and `drawFrameOffset()`.
    */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
     mo.draw(this.ctx);
-    mo.drawFrame(this.ctx);
-    mo.drawFrameOffset(this.ctx);
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);
@@ -364,9 +394,11 @@ class World {
   }
 
   /**
-   * Spiegelt das Bild des Objekts horizontal, indem der Kontext der Zeichenfläche gespeichert,
-   * übersetzt und skaliert wird.
-   * @param {Object} mo - Das Objekt, dessen Bild gespiegelt wird.
+   * Flips the image of the object horizontally by applying a transformation to the canvas context.
+   * This is used when the object is facing the other direction.
+   *
+   * @param {Object} mo - The object to be flipped. The object should have a `width` property
+   * and an `x` position that will be transformed.
    */
   flipImage(mo) {
     this.ctx.save();
@@ -376,9 +408,10 @@ class World {
   }
 
   /**
-   * Setzt das Bild des Objekts nach der Spiegelung zurück, indem die horizontalen Koordinaten
-   * wiederhergestellt und der Kontext der Zeichenfläche zurückgesetzt wird.
-   * @param {Object} mo - Das Objekt, dessen Bild zurückgespiegelt wird.
+   * Reverses the flipping transformation applied by the `flipImage` method.
+   * This restores the object to its original facing direction.
+   *
+   * @param {Object} mo - The object to be restored to its original direction.
    */
   flipImageBack(mo) {
     mo.x = mo.x * -1;

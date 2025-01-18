@@ -3,6 +3,7 @@ class Endboss extends MovableObject {
   width = 250;
   y = 50;
   x = 8350;
+  world;
   energy = 10;
   oldEnergy = 10;
   hadFirstContact = false;
@@ -64,6 +65,7 @@ class Endboss extends MovableObject {
   constructor() {
     super().loadImage(this.IMAGES_ALERT[0]);
     this.preLoadAllImages();
+    this.world = world; 
     this.speed = 1.5 + Math.random() * 1.5;
     this.animate();
   }
@@ -99,10 +101,7 @@ class Endboss extends MovableObject {
    * is confirmed. After the first contact, it switches to movement.
    */
   animationIfFirstContact() {
-   console.log("hadFirstContact", this.hadFirstContact);
-   console.log("positonCharacter", positionCharacter)
-   
- 
+console.log("Es funktioniert", this.world.youWinOrLost)
     if (!this.isDeadEnemy) {
       if (this.checkFirstContact()) {
         this.gotFirstContact();
@@ -122,7 +121,7 @@ class Endboss extends MovableObject {
    * @returns {boolean} - True if the alert animation should play, false otherwise.
    */
   showFirstContactAnimation() {
-    return (this.i < 10 || !this.hadFirstContact);
+    return this.i < 10 || !this.hadFirstContact;
   }
 
   /**
@@ -139,14 +138,13 @@ class Endboss extends MovableObject {
    * @returns {boolean} - True if first contact is triggered, false otherwise.
    */
   checkFirstContact() {
-    return (positionCharacter > 6500 && !this.hadFirstContact);
+    return positionCharacter > 6500 && !this.hadFirstContact;
   }
 
   /**
    * Resets the first contact flag and stops the alert animation.
    */
   gotFirstContact() {
-    console.log("First contact made!");
     this.i = 0;
     this.hadFirstContact = true;
   }
@@ -171,7 +169,7 @@ class Endboss extends MovableObject {
    * @returns {boolean} - True if the character is on the left, false otherwise.
    */
   characterOnTheLeft() {
-    return (positionCharacter < this.x && this.moveChicken);
+    return positionCharacter < this.x && this.moveChicken;
   }
 
   /**
@@ -188,7 +186,7 @@ class Endboss extends MovableObject {
    * @returns {boolean} - True if the character is on the right, false otherwise.
    */
   characterOnTheRight() {
-    return (positionCharacter > this.x && this.moveChicken);
+    return positionCharacter > this.x && this.moveChicken;
   }
 
   /**
@@ -209,6 +207,9 @@ class Endboss extends MovableObject {
       this.playAnimation(this.IMAGES_DEAD);
       this.world.youWinOrLost = "win";
     } else if (this.isHurt() < 1) {
+      if (!mute) {
+        AUDIO_CHICKENCACKLE.play();
+      }
       this.playAnimation(this.IMAGES_HURT);
     } else if (this.isHurt() < 5) {
       this.playAnimation(this.IMAGES_ATTACK);

@@ -8,10 +8,6 @@ class Chicken extends MovableObject {
   };
   energy = 1;
 
-  /**
-   * Array of image paths for the walking animation.
-   * @type {string[]}
-   */
   IMAGES_WALKING = [
     "img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
     "img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",

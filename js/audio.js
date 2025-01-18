@@ -7,6 +7,7 @@ const AUDIO_SNORING = new Audio("audio/snoring.mp3");
 const AUDIO_COINS = new Audio("audio/coins.mp3");
 const AUDIO_BOTTLE = new Audio("audio/bottle.mp3");
 const AUDIO_BROKENBOTTLE = new Audio("audio/brokenBottle.mp3");
+const AUDIO_CHICKENCACKLE = new Audio("audio/cackleChicken.mp3");
 
 AUDIO_JUMP.loop = false;
 AUDIO_BACKGROUND.volume = 0.08;

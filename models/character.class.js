@@ -126,6 +126,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
   }
 
+
   /**
    * Starts the character animations and movement at regular intervals.
    */

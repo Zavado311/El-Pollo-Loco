@@ -6,8 +6,8 @@ let positionCharacter;
 let mute = false;
 
 /**
- * Initialisiert die Welt und das Canvas, startet die Hintergrundmusik.
- * Wiederholt die Überprüfung der Audio-Steuerung alle 1/60 Sekunden.
+ * Initializes the world and the canvas, starts the background music.
+ * Repeatedly checks the audio control every 1/60 seconds.
  */
 function init() {
   canvas = document.getElementById("canvas");
@@ -25,8 +25,8 @@ function init() {
 }
 
 /**
- * Schaltet den Ton aus, ändert das Sound-Icon zu 'Mute' und
- * aktualisiert die onclick-Eigenschaft, um die Funktion zum Entmuten zu verwenden.
+ * Mutes the audio, changes the sound icon to 'Mute', and updates the onclick
+ * attribute to use the unmute function.
  */
 function muteIt() {
   mute = true;
@@ -35,8 +35,8 @@ function muteIt() {
 }
 
 /**
- * Schaltet den Ton ein, ändert das Sound-Icon zu 'Sound' und
- * aktualisiert die onclick-Eigenschaft, um die Funktion zum Stummschalten zu verwenden.
+ * Unmutes the audio, changes the sound icon to 'Sound', and updates the onclick
+ * attribute to use the mute function.
  */
 function unMuteIt() {
   mute = false;
@@ -45,8 +45,8 @@ function unMuteIt() {
 }
 
 /**
- * Aktiviert den Vollbildmodus, ändert das Vollbild-Symbol zu 'kleiner Bildschirm' und
- * passt die onclick-Eigenschaft an, um den kleineren Bildschirm zu aktivieren.
+ * Enables fullscreen mode, changes the fullscreen icon to 'small screen', and
+ * updates the onclick attribute to enable the smaller screen.
  */
 function biggerScreenSize() {
   document.getElementById("fullscreenSymbol").src =
@@ -58,8 +58,8 @@ function biggerScreenSize() {
 }
 
 /**
- * Deaktiviert den Vollbildmodus, ändert das Vollbild-Symbol zu 'Vollbild' und
- * passt die onclick-Eigenschaft an, um den größeren Bildschirm zu aktivieren.
+ * Exits fullscreen mode, changes the fullscreen icon to 'fullscreen', and
+ * updates the onclick attribute to enable the larger screen.
  */
 function littleScreenSize() {
   document.getElementById("fullscreenSymbol").src =
@@ -71,8 +71,8 @@ function littleScreenSize() {
 }
 
 /**
- * Fordert den Browser auf, den angegebenen Element im Vollbildmodus anzuzeigen.
- * @param {HTMLElement} element - Das Element, das im Vollbildmodus angezeigt werden soll.
+ * Requests the browser to display the specified element in fullscreen mode.
+ * @param {HTMLElement} element - The element to be displayed in fullscreen mode.
  */
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
@@ -85,7 +85,7 @@ function enterFullscreen(element) {
 }
 
 /**
- * Beendet den Vollbildmodus des Dokuments.
+ * Exits fullscreen mode for the document.
  */
 function exitFullscreen() {
   if (document.exitFullscreen) {
@@ -96,8 +96,8 @@ function exitFullscreen() {
 }
 
 /**
- * Fügt Event-Listener für Touch-Steuerung hinzu, um die Bewegung der Spielfigur zu steuern.
- * Startet und stoppt die Bewegung bei Berührung (touchstart, touchend).
+ * Adds event listeners for touch controls to move the character.
+ * Starts and stops movement on touch (touchstart, touchend).
  */
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("moveLeft").addEventListener("touchstart", (e) => {
@@ -158,8 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /**
- * Fügt Event-Listener für Tastatureingaben hinzu, um die Bewegung der Spielfigur zu steuern.
- * Setzt die Richtung und Aktionen basierend auf den gedrückten Tasten.
+ * Adds event listeners for keyboard inputs to control the character's movement.
+ * Sets direction and actions based on the pressed keys.
  */
 window.addEventListener("keydown", (e) => {
   if (e.keyCode == 39) {
@@ -188,8 +188,8 @@ window.addEventListener("keydown", (e) => {
 });
 
 /**
- * Fügt Event-Listener hinzu, um die Spielfigur zu stoppen, wenn die entsprechende Taste losgelassen wird.
- * Entfernt die Aktion basierend auf der losgelassenen Taste.
+ * Adds event listeners to stop the character's movement when the corresponding
+ * key is released. Removes actions based on the released key.
  */
 window.addEventListener("keyup", (e) => {
   if (e.keyCode == 39) {

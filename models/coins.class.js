@@ -8,6 +8,7 @@ class Coins extends MovableObject {
   };
 
   COINS = ["img/8_coin/coin_1.png", "img/8_coin/coin_2.png"];
+  
   /**
    * Initializes a new object.
    * Loads the initial coin image and sets a random position for the coin within a defined range.
