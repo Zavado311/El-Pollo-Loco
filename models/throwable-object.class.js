@@ -23,6 +23,13 @@ class ThrowableObject extends MovableObject {
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
+  /**
+   * Creates an instance of ThrowableObject.
+   * Initializes the position, size, and sets up the throwing or reverse throwing mechanism.
+   * @param {number} x - The initial x-coordinate of the throwable object.
+   * @param {number} y - The initial y-coordinate of the throwable object.
+   * @param {boolean} direction - The direction in which to throw the object. `true` for forward, `false` for reverse.
+   */
   constructor(x, y, direction) {
     super().loadImage("img/6_salsa_bottle/salsa_bottle.png");
     this.x = x;
@@ -39,6 +46,9 @@ class ThrowableObject extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Throws the object in the forward direction with gravity applied.
+   */
   throw() {
     this.speedY = 30;
     this.applyGravity();
@@ -47,6 +57,9 @@ class ThrowableObject extends MovableObject {
     }, 25);
   }
 
+  /**
+   * Throws the object in the reverse direction with gravity applied.
+   */
   throwReverse() {
     this.speedY = 30;
     this.applyGravity();
@@ -55,6 +68,10 @@ class ThrowableObject extends MovableObject {
     }, 25);
   }
 
+  /**
+   * Animates the object based on its state (throwing or broken).
+   * Plays the throwing animation until collision occurs, then plays the broken animation.
+   */
   animate() {
     setInterval(() => {
       if (this.collision) {

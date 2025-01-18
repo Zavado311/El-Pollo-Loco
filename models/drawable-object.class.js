@@ -7,15 +7,33 @@ class DrawableObject {
   height = 100;
   width = 100;
 
+  /**
+   * Loads an image from the specified file path and assigns it to the `img` property.
+   *
+   * @param {string} path - The path to the image file.
+   */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
+  /**
+   * Draws the image on the given canvas context at the current object's position
+   * and with its specified width and height.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context to draw the image on.
+   */
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+  /**
+   * Draws a blue rectangle (frame) around certain types of objects (like Character, Chicken, Endboss, etc.)
+   * to highlight their boundaries on the canvas.
+   * The frame is only drawn for specific object types.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context to draw the frame on.
+   */
   drawFrame(ctx) {
     if (
       this instanceof Character ||
@@ -33,6 +51,12 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Draws a red offset rectangle around certain types of objects (like Character, Chicken, Bottle, etc.)
+   * to highlight their effective hitbox on the canvas, based on the offset properties.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context to draw the offset frame on.
+   */
   drawFrameOffset(ctx) {
     if (
       this instanceof Character ||
@@ -56,6 +80,12 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Loads multiple images from the specified array of file paths and stores them
+   * in the `imageCache` object for future use.
+   *
+   * @param {string[]} arr - An array of image file paths to load.
+   */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();

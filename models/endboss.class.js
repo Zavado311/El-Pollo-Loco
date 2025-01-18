@@ -56,13 +56,22 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+  /**
+   * Constructor method for initializing the Endboss object.
+   * Loads the initial image, preloads all the necessary images for animations,
+   * sets the movement speed, and starts the animation process.
+   */
   constructor() {
     super().loadImage(this.IMAGES_ALERT[0]);
     this.preLoadAllImages();
-    this.speed = 0.8 + Math.random() * 0.5;
+    this.speed = 1.5 + Math.random() * 1.5;
     this.animate();
   }
 
+  /**
+   * Preloads all the necessary images used for the Endboss animations.
+   * Images include walking, attack, alert, hurt, and dead states.
+   */
   preLoadAllImages() {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
@@ -71,47 +80,78 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
   }
 
+  /**
+   * Starts the animation process for the Endboss.
+   * Three intervals are set up:
+   * - To handle the alert animation upon first contact.
+   * - To move the Endboss.
+   * - To check for interactions such as hurt or death.
+   */
   animate() {
     setInterval(() => this.animationIfFirstContact(), 150);
-
     setInterval(() => this.moveEndboss(), 1000 / 60);
-
     setInterval(() => this.checkTheInteraction(), 100);
   }
 
+  /**
+   * Handles the alert animation when the player first contacts the Endboss.
+   * If the Endboss is not dead, it plays the alert animation until first contact
+   * is confirmed. After the first contact, it switches to movement.
+   */
   animationIfFirstContact() {
-    let i = 0;
+    console.log(this.isDeadEnemy);
     if (!this.isDeadEnemy) {
       if (this.showFirstContactAnimation()) {
         this.playAnimation(this.IMAGES_ALERT);
       } else if (this.hadFirstContact) {
         this.showMovement();
       }
-      this.i++;
-      if (this.checkFirstContact) {
+      if (this.checkFirstContact()) {
         this.gotFirstContact();
       }
     }
+    this.i++;
   }
 
+  /**
+   * Determines whether to show the alert animation (before first contact).
+   *
+   * @returns {boolean} - True if the alert animation should play, false otherwise.
+   */
   showFirstContactAnimation() {
-    return this.i < 10 || !this.hadFirstContact;
+    return (this.i < 10 || !this.hadFirstContact);
   }
 
+  /**
+   * Plays the walking animation and flags the Endboss as ready to move.
+   */
   showMovement() {
     this.playAnimation(this.IMAGES_WALKING);
     this.moveChicken = true;
   }
 
+  /**
+   * Checks if the player's character is in close proximity to trigger first contact.
+   *
+   * @returns {boolean} - True if first contact is triggered, false otherwise.
+   */
   checkFirstContact() {
-    return positionCharacter > 7000 && !this.hadFirstContact;
+    return (this.positionCharacter > 6500 && !this.hadFirstContact);
   }
 
+  /**
+   * Resets the first contact flag and stops the alert animation.
+   */
   gotFirstContact() {
+    console.log("First contact made!");
     this.i = 0;
     this.hadFirstContact = true;
   }
 
+  /**
+   * Moves the Endboss left or right depending on the player's character position.
+   * Movement only occurs after first contact and if the Endboss is not dead.
+   */
   moveEndboss() {
     if (!this.isDeadEnemy && this.hadFirstContact) {
       if (this.characterOnTheLeft()) {
@@ -122,24 +162,45 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Checks if the player's character is to the left of the Endboss.
+   *
+   * @returns {boolean} - True if the character is on the left, false otherwise.
+   */
   characterOnTheLeft() {
-    return positionCharacter < this.x && this.moveChicken;
+    return (positionCharacter < this.x && this.moveChicken);
   }
 
+  /**
+   * Moves the Endboss to the left and changes the direction to face left.
+   */
   moveLeft() {
     super.moveLeft();
     this.otherDirection = false;
   }
 
+  /**
+   * Checks if the player's character is to the right of the Endboss.
+   *
+   * @returns {boolean} - True if the character is on the right, false otherwise.
+   */
   characterOnTheRight() {
-    return positionCharacter > this.x && this.moveChicken;
+    return (positionCharacter > this.x && this.moveChicken);
   }
 
+  /**
+   * Moves the Endboss to the right and changes the direction to face right.
+   */
   moveRight() {
     super.moveRight();
     this.otherDirection = true;
   }
 
+  /**
+   * Checks the current interaction between the player and the Endboss.
+   * If the Endboss is dead, it plays the death animation and sets the game state to "win".
+   * If hurt, the hurt or attack animations are played depending on the damage level.
+   */
   checkTheInteraction() {
     if (this.isDead()) {
       this.playAnimation(this.IMAGES_DEAD);

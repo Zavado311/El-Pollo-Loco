@@ -5,6 +5,10 @@ let currentKey;
 let positionCharacter;
 let mute = false;
 
+/**
+ * Initialisiert die Welt und das Canvas, startet die Hintergrundmusik.
+ * Wiederholt die Überprüfung der Audio-Steuerung alle 1/60 Sekunden.
+ */
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
@@ -20,18 +24,30 @@ function init() {
   }, 1000 / 60);
 }
 
+/**
+ * Schaltet den Ton aus, ändert das Sound-Icon zu 'Mute' und
+ * aktualisiert die onclick-Eigenschaft, um die Funktion zum Entmuten zu verwenden.
+ */
 function muteIt() {
   mute = true;
   document.getElementById("soundIMG").src = "img/background/noSound.svg";
   document.getElementById("sound").setAttribute("onclick", "unMuteIt()");
 }
 
+/**
+ * Schaltet den Ton ein, ändert das Sound-Icon zu 'Sound' und
+ * aktualisiert die onclick-Eigenschaft, um die Funktion zum Stummschalten zu verwenden.
+ */
 function unMuteIt() {
   mute = false;
   document.getElementById("soundIMG").src = "img/background/sound.svg";
   document.getElementById("sound").setAttribute("onclick", "muteIt()");
 }
 
+/**
+ * Aktiviert den Vollbildmodus, ändert das Vollbild-Symbol zu 'kleiner Bildschirm' und
+ * passt die onclick-Eigenschaft an, um den kleineren Bildschirm zu aktivieren.
+ */
 function biggerScreenSize() {
   document.getElementById("fullscreenSymbol").src =
     "img/background/smallscreenSymbol.svg";
@@ -41,6 +57,10 @@ function biggerScreenSize() {
   enterFullscreen(document.getElementById("fullscreen"));
 }
 
+/**
+ * Deaktiviert den Vollbildmodus, ändert das Vollbild-Symbol zu 'Vollbild' und
+ * passt die onclick-Eigenschaft an, um den größeren Bildschirm zu aktivieren.
+ */
 function littleScreenSize() {
   document.getElementById("fullscreenSymbol").src =
     "img/background/fullscreenSymbol.svg";
@@ -50,6 +70,10 @@ function littleScreenSize() {
   exitFullscreen();
 }
 
+/**
+ * Fordert den Browser auf, den angegebenen Element im Vollbildmodus anzuzeigen.
+ * @param {HTMLElement} element - Das Element, das im Vollbildmodus angezeigt werden soll.
+ */
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
@@ -60,6 +84,9 @@ function enterFullscreen(element) {
   }
 }
 
+/**
+ * Beendet den Vollbildmodus des Dokuments.
+ */
 function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -68,6 +95,10 @@ function exitFullscreen() {
   }
 }
 
+/**
+ * Fügt Event-Listener für Touch-Steuerung hinzu, um die Bewegung der Spielfigur zu steuern.
+ * Startet und stoppt die Bewegung bei Berührung (touchstart, touchend).
+ */
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("moveLeft").addEventListener("touchstart", (e) => {
     if (e.cancelable) {
@@ -126,6 +157,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+/**
+ * Fügt Event-Listener für Tastatureingaben hinzu, um die Bewegung der Spielfigur zu steuern.
+ * Setzt die Richtung und Aktionen basierend auf den gedrückten Tasten.
+ */
 window.addEventListener("keydown", (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = true;
@@ -152,6 +187,10 @@ window.addEventListener("keydown", (e) => {
   currentKey = e;
 });
 
+/**
+ * Fügt Event-Listener hinzu, um die Spielfigur zu stoppen, wenn die entsprechende Taste losgelassen wird.
+ * Entfernt die Aktion basierend auf der losgelassenen Taste.
+ */
 window.addEventListener("keyup", (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = false;

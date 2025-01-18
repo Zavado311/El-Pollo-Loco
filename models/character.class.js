@@ -5,7 +5,7 @@ class Character extends MovableObject {
   speed = 10;
   lastInteraction = 0;
   world;
-  
+
   offset = {
     top: 100,
     bottom: 30,
@@ -131,7 +131,7 @@ class Character extends MovableObject {
    */
   animate() {
     setInterval(() => this.moveCharacter(), 1000 / 60);
-    setInterval(() => this.playCharacter(), 50);
+    setInterval(() => this.playCharacter(), 100);
   }
 
   /**
@@ -218,7 +218,7 @@ class Character extends MovableObject {
       this.playSleeping();
     } else if (this.isActive() > 2) {
       this.playAnimation(this.IMAGES_IDLE);
-    } else if (this.isHurt() < 1) {
+    } else if (super.isHurt() < 1) {
       this.playHurt();
     } else if (this.isAboveGround()) {
       this.playJump();
@@ -252,20 +252,34 @@ class Character extends MovableObject {
    */
   playDead() {
     this.playAnimation(this.IMAGES_DEAD);
+    this.world.youWinOrLost = "lost";
   }
 
   /**
-   * Plays the hurt animation for the character.
+   * Plays the hurt animation and the corresponding pain sound for the character.
+   * The animation is played using the images defined in `IMAGES_HURT`.
+   * If the audio is not muted, the hurt sound effect is played.
    */
   playHurt() {
     this.playAnimation(this.IMAGES_HURT);
+    if (!mute) {
+      AUDIO_PAIN.play();
+    }
   }
 
   /**
-   * Plays the jumping animation for the character.
+   * Plays the jumping animation and triggers the jump sound effect for the character.
+   *
+   * The function starts the jump animation using the character's upward jumping images.
+   * If the sound is not muted, it also plays the jumping sound effect.
+   *
+   * @method playJump
    */
   playJump() {
     this.playAnimation(this.IMAGES_JUMPING_UP);
+    if (!mute) {
+      AUDIO_JUMP.play();
+    }
   }
 
   /**
@@ -280,6 +294,9 @@ class Character extends MovableObject {
    */
   playSleeping() {
     this.playAnimation(this.IMAGES_LONGIDLE);
+    if (!mute) {
+      AUDIO_SNORING.play();
+    }
   }
 
   /**

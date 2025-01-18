@@ -1,4 +1,17 @@
 let level1;
+
+/**
+ * Initializes a new level with predefined entities including enemies, clouds, background objects, coins, and bottles.
+ *
+ * The function creates a new `Level` object containing the following:
+ * - Enemies: A mix of `Chicken`, `LittleChicken`, and one `Endboss`.
+ * - Clouds: Several `Cloud` objects with different background images.
+ * - Background objects: A sequence of background layers including air, first, second, and third layers.
+ * - Collectible items: Coins and bottles scattered throughout the level.
+ *
+ * @function initLevel
+ * @global
+ */
 function initLevel() {
   level1 = new Level(
     [

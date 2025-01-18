@@ -88,6 +88,7 @@ class World {
   }
 
   throwBottleToLeft(changeDirection) {
+   this.character.gotInteraction();
     let bottle = new ThrowableObject(
       this.character.x - 100,
       this.character.y + 100,
@@ -121,6 +122,9 @@ class World {
       ) {
         enemy.hit();
         this.character.jump();
+        if (!mute) {
+          AUDIO_JUMPONCHICKEN.play();
+        }
       }
       if (enemy.energy <= 0) {
         enemy.isDeadEnemy = true;
@@ -130,29 +134,64 @@ class World {
 
   checkChickenHit() {
     this.throwableObjects.forEach((bottle, index) => {
-      for (let i = this.level.enemies.length - 1; i >= 0; i--) {
-        const enemy = this.level.enemies[i];
-
-        if (bottle.isColliding(enemy) && !bottle.collision) {
-          bottle.collision = true;
-          if (!mute) {
-            AUDIO_BROKENBOTTLE.play();
-          }
-          this.level.enemies[i].hit();
-          if (this.level.enemies[29]) {
-            this.statusBarEndboss.setPercentageEndboss(-20);
-          }
-          setTimeout(() => {
-            this.throwableObjects.splice(index, 1);
-          }, 200);
-
-          if (enemy.energy <= 0) {
-            enemy.isDeadEnemy = true;
-          }
-          break;
-        }
-      }
+      this.level.enemies.forEach((enemy, i) => {
+        this.checkBottleCollision(bottle, enemy, index, i);
+      });
     });
+  }
+
+  /**
+   * Checks if a bottle collides with an enemy and handles the collision logic.
+   * @param {Object} bottle - The thrown bottle object.
+   * @param {Object} enemy - The enemy object that might collide with the bottle.
+   * @param {number} index - The index of the bottle in the throwableObjects array.
+   * @param {number} i - The index of the enemy in the level's enemies array.
+   */
+  checkBottleCollision(bottle, enemy, index, i) {
+    if (bottle.isColliding(enemy) && !bottle.collision) {
+      bottle.collision = true;
+      this.playCollisionSound();
+      this.handleEnemyHit(enemy);
+      this.removeBottle(index);
+    }
+  }
+
+  /**
+   * Plays the broken bottle sound effect if not muted.
+   */
+  playCollisionSound() {
+    if (!mute) {
+      AUDIO_BROKENBOTTLE.play();
+    }
+  }
+
+  /**
+   * Handles the logic when an enemy is hit by a bottle.
+   * @param {Object} enemy - The enemy object that was hit.
+   */
+  handleEnemyHit(enemy) {
+    enemy.hit();
+    this.handleEndbossHit(enemy);
+  }
+
+  /**
+   * If the endboss (enemy at index 29) is hit, reduce its energy.
+   * @param {Object} enemy - The enemy that was hit.
+   */
+  handleEndbossHit(enemy) {
+    if (this.level.enemies[29]) {
+      this.statusBarEndboss.setPercentageEndboss(-20);
+    }
+  }
+
+  /**
+   * Removes the bottle from the throwableObjects array after a short delay.
+   * @param {number} index - The index of the bottle in the throwableObjects array.
+   */
+  removeBottle(index) {
+    setTimeout(() => {
+      this.throwableObjects.splice(index, 1);
+    }, 200);
   }
 
   checkCollecting() {
@@ -183,18 +222,44 @@ class World {
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.clearCanvas();
+    this.drawBackgroundObjects();
+    this.drawStatusBars();
+    this.drawMainObjects();
+    this.requestNextFrame();
+  }
 
+  /**
+   * Clears the entire canvas.
+   */
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  /**
+   * Draws the background objects and clouds, applying camera translation.
+   */
+  drawBackgroundObjects() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
     this.ctx.translate(-this.camera_x, 0);
+  }
 
+  /**
+   * Draws the status bars and related UI elements.
+   */
+  drawStatusBars() {
     this.addToMap(this.statusBar);
     this.addToMap(this.statusBarCoins);
     this.addToMap(this.statusBarBottle);
     this.addToMap(this.statusBarEndboss);
+  }
 
+  /**
+   * Draws the main game objects like enemies, throwable objects, coins, bottles, and the character.
+   */
+  drawMainObjects() {
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.enemies);
@@ -205,12 +270,18 @@ class World {
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
+  }
 
+  /**
+   * Requests the next animation frame to keep the game loop running.
+   */
+  requestNextFrame() {
     let self = this;
     requestAnimationFrame(function () {
       self.draw();
     });
   }
+
 
   addObjectsToMap(objects) {
     objects.forEach((o) => {
