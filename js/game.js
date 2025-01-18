@@ -7,10 +7,12 @@ let mute = false;
 let youWinOrLost;
 
 /**
- * Initializes the world and the canvas, starts the background music.
+ * Initializes the world, canvas and level, starts the background music.
  * Repeatedly checks the audio control every 1/60 seconds.
  */
 function init() {
+  initLevel();
+  youWinOrLost = null;
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
 
