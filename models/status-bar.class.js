@@ -25,32 +25,18 @@ class StatusBar extends DrawableObject {
   }
 
   /**
-   * Sets the health percentage and updates the displayed image accordingly.
-   * @param {number} percentage - The new health percentage to set (0 to 100).
+   * Sets the percentage value and updates the image based on the given percentage.
+   *
+   * - The function sets the `percentage` property to the provided `percentage` value.
+   * - It then calculates the correct image path by calling the `resolveImageIndex()` function with predefined thresholds.
+   * - The calculated image path is used to update the `img` property with the corresponding image from the `imageCache`.
+   *
+   * @param {number} percentage - The new percentage value to set.
+   * @returns {void}
    */
   setPercentage(percentage) {
     this.percentage = percentage;
-    let path = this.IMAGES[this.resolveImageIndex()];
+    let path = this.IMAGES[super.resolveImageIndex(100, 80, 60, 40, 20)];
     this.img = this.imageCache[path];
-  }
-
-  /**
-   * Resolves the image index based on the current health percentage.
-   * @returns {number} The index of the image to display based on the percentage.
-   */
-  resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage > 80) {
-      return 4;
-    } else if (this.percentage > 60) {
-      return 3;
-    } else if (this.percentage > 40) {
-      return 2;
-    } else if (this.percentage > 20) {
-      return 1;
-    } else {
-      return 0;
-    }
   }
 }

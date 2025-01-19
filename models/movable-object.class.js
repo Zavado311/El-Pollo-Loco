@@ -16,30 +16,52 @@ class MovableObject extends DrawableObject {
   };
 
   /**
-   * Applies gravity to the object by adjusting its vertical position (y) and speed (speedY).
+   * Applies gravity to the object by updating its position and speed over time.
+   *
+   * The function uses `setInterval` to repeatedly adjust the `y` position and `speedY` (speed in the Y-axis) of the object at a rate of 30 times per second (33.33ms interval).
+   * Gravity is applied by reducing the `speedY` based on the `acceleration`. The object’s `y` position is adjusted accordingly unless it is above ground or moving upwards.
+   *
+   * - For `Character`, the object’s `y` position is capped at 150 (i.e., the ground level).
+   * - For `LittleChicken`, the object’s `y` position is capped at 365 (i.e., the ground level for LittleChicken).
+   *
+   * @returns {void}
    */
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY >= 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
+
+        if (this instanceof Character && this.y > 150) {
+          this.y = 150;
+          this.speedY = 0;
+        }
+        if (this instanceof LittleChicken && this.y > 365) {
+          this.y = 365;
+          this.speedY = 0;
+        }
       }
     }, 1000 / 30);
   }
 
   /**
-   * Checks if the object is above the ground.
-   * @returns {boolean} True if the object is above the ground, false otherwise.
+   * Checks if the current object is above the ground based on its class and position.
+   *
+   * - For `ThrowableObject`, it always returns `true`.
+   * - For `LittleChicken`, it checks if the `y` position is less than `340`.
+   * - For `Character`, it checks if the `y` position is less than `150`.
+   *
+   * @returns {boolean} - Returns `true` if the object is above ground based on its class and position, `false` otherwise.
    */
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return true;
-    } else {
-      if (this instanceof LittleChicken) {
-        return this.y < 340;
-      }
+    } else if (this instanceof LittleChicken) {
+      return this.y < 340;
+    } else if (this instanceof Character) {
       return this.y < 150;
     }
+    return false;
   }
 
   /**
@@ -54,15 +76,6 @@ class MovableObject extends DrawableObject {
       this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
       this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     );
-  }
-
-  /**
-   * Checks if the character is above the ground.
-   * @param {Character} cha - The character object to check.
-   * @returns {boolean} True if the character is above the ground, false otherwise.
-   */
-  isAbouveGround(cha) {
-    return cha.y < 80;
   }
 
   /**

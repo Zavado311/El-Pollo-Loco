@@ -149,12 +149,43 @@ class World {
   }
 
   /**
-   * Checks if the character collides with any enemies.
-   * If a collision occurs, the character takes damage and the energy status bar is updated.
+   * Checks for collisions between the character and enemies, and handles the interaction when a collision occurs.
+   *
+   * - The function iterates over all enemies in the level.
+   * - If the character collides with an enemy, is not above ground, and the enemy is not dead, the character will be hit and an interaction will occur.
+   * - The character's energy is updated in the status bar after the interaction.
+   *
+   * @returns {void}
    */
   checkCollisions() {
     this.level.enemies.forEach((enemy, i) => {
       if (
+        this.character.isColliding(enemy) &&
+        !this.level.enemies[i].isDeadEnemy &&
+        !this.character.isAboveGround()
+      ) {
+        this.character.hit();
+        this.character.gotInteraction();
+        this.statusBar.setPercentage(this.character.energy);
+      }
+    });
+  }
+
+  /**
+   * Checks for jump collisions between the character and enemies, and handles jump or hit interactions.
+   *
+   * - The function iterates over all enemies in the level.
+   * - If the jump is valid (the character is jumping on an enemy), it calls the `jumpingOnEnemy()` method to handle the interaction.
+   * - If the jump is not valid but a collision occurs with an enemy (and the enemy is not dead), the character gets hit, and an interaction occurs.
+   * - The character's energy is updated in the status bar after the interaction.
+   *
+   * @returns {void}
+   */
+  checkJumpCollision() {
+    this.level.enemies.forEach((enemy, i) => {
+      if (this.checkIfJumpValid(enemy, i)) {
+        this.jumpingOnEnemy(enemy, i);
+      } else if (
         this.character.isColliding(enemy) &&
         !this.level.enemies[i].isDeadEnemy
       ) {
@@ -166,29 +197,47 @@ class World {
   }
 
   /**
-   * Checks if the character collides with enemies while jumping.
-   * If the character is above an enemy and falling, the enemy is hit and the character jumps again.
-   * If the enemy's energy reaches zero, it is marked as dead.
+   * Checks if the character's jump is valid for colliding with a given enemy.
+   *
+   * - The function checks if the character is colliding with the enemy, is above the ground, and is descending (speedY <= 0).
+   * - It ensures that the enemy is not dead and that the enemy is not the specific enemy at index 30 (likely an exception, e.g., a boss).
+   * - Returns `true` if the jump is valid (character can jump on the enemy), otherwise returns `false`.
+   *
+   * @param {Object} enemy - The enemy to check for collision with.
+   * @param {number} i - The index of the enemy in the level's enemies array.
+   * @returns {boolean} - `true` if the jump is valid, otherwise `false`.
    */
-  checkJumpCollision() {
-    this.level.enemies.forEach((enemy, i) => {
-      if (
-        this.character.isColliding(enemy) &&
-        this.character.isAboveGround() &&
-        this.character.speedY <= 0 &&
-        !this.level.enemies[i].isDeadEnemy &&
-        i !== 29
-      ) {
-        enemy.hit();
-        this.character.jump();
-        if (!mute) {
-          AUDIO_JUMPONCHICKEN.play();
-        }
-      }
-      if (enemy.energy <= 0) {
-        enemy.isDeadEnemy = true;
-      }
-    });
+  checkIfJumpValid(enemy, i) {
+    return (
+      this.character.isColliding(enemy) &&
+      this.character.isAboveGround() &&
+      this.character.speedY <= 0 &&
+      !this.level.enemies[i].isDeadEnemy &&
+      enemy !== this.level.enemies[30]
+    );
+  }
+
+  /**
+   * Handles the interaction when the character jumps on an enemy.
+   *
+   * - The function deals damage to the enemy by calling the `hit()` method on the enemy.
+   * - The character performs a jump by calling the `jump()` method on the character.
+   * - If the game is not muted, the "jump on chicken" sound effect is played.
+   * - If the enemy's energy reaches 0 or below, the enemy is marked as dead (`isDeadEnemy` set to `true`).
+   *
+   * @param {Object} enemy - The enemy that the character is interacting with during the jump.
+   * @param {number} i - The index of the enemy in the level's enemies array.
+   * @returns {void}
+   */
+  jumpingOnEnemy(enemy, i) {
+    enemy.hit();
+    this.character.jump();
+    if (!mute) {
+      AUDIO_JUMPONCHICKEN.play();
+    }
+    if (enemy.energy <= 0) {
+      enemy.isDeadEnemy = true;
+    }
   }
 
   /**

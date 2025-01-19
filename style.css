@@ -497,7 +497,17 @@ h1 a {
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1366px) {
+@media only screen and (min-width: 700px) and (max-width: 1366px) and (orientation: portrait) {
+  .playScreen {
+    display: none;
+  }
+
+  .changeToLandscape {
+    display: flex;
+  }
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1366px) {
   .controllPepe {
     display: flex;
   }

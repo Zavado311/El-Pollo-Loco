@@ -7,10 +7,20 @@ let mute = false;
 let youWinOrLost;
 
 /**
- * Initializes the world, canvas and level, starts the background music.
- * Repeatedly checks the audio control every 1/60 seconds.
+ * Initializes the game by setting up the necessary configurations, loading saved settings,
+ * and starting the game world.
+ *
+ * - Retrieves the mute setting from `localStorage` and sets it to `false` if not found.
+ * - Calls the `setCorrectSoundSymbol()` function to update the sound icon based on the mute setting.
+ * - Initializes the game level by calling `initLevel()`.
+ * - Sets up the game world and canvas, creating a new `World` object with the `keyboard` input.
+ * - Sets an interval to manage background music based on the mute setting, playing or pausing it as needed.
+ *
+ * @returns {void}
  */
 function init() {
+  mute = JSON.parse(localStorage.getItem("mute")) || false;
+  setCorrectSoundSymbol();
   initLevel();
   youWinOrLost = null;
   canvas = document.getElementById("canvas");
@@ -28,21 +38,54 @@ function init() {
 }
 
 /**
- * Mutes the audio, changes the sound icon to 'Mute', and updates the onclick
- * attribute to use the unmute function.
+ * Updates the sound icon based on the current mute setting.
+ *
+ * - If `mute` is `false`, the sound icon is set to a sound-enabled image (`sound.svg`).
+ * - If `mute` is `true`, the sound icon is set to a muted image (`noSound.svg`).
+ *
+ * This function updates the `src` attribute of the image element with the ID `soundIMG` to reflect the current mute state.
+ *
+ * @returns {void}
+ */
+function setCorrectSoundSymbol() {
+  const muteImage = document.getElementById("soundIMG");
+  if (mute === false) {
+    muteImage.src = "img/background/sound.svg";
+  } else if (mute === true) {
+    muteImage.src = "img/background/noSound.svg";
+  }
+}
+
+/**
+ * Mutes the game audio and updates the UI to reflect the mute state.
+ *
+ * - Sets the `mute` variable to `true` and stores it in `localStorage` so the mute state persists across sessions.
+ * - Stops all audio playback by calling `stopAllAudio()`.
+ * - Changes the sound icon to a muted icon (`noSound.svg`).
+ * - Updates the `onclick` attribute of the sound element to call the `unMuteIt()` function when clicked, allowing the user to unmute the audio.
+ *
+ * @returns {void}
  */
 function muteIt() {
   mute = true;
+  localStorage.setItem("mute", JSON.stringify(mute));
+  stopAllAudio();
   document.getElementById("soundIMG").src = "img/background/noSound.svg";
   document.getElementById("sound").setAttribute("onclick", "unMuteIt()");
 }
 
 /**
- * Unmutes the audio, changes the sound icon to 'Sound', and updates the onclick
- * attribute to use the mute function.
+ * Unmutes the game audio and updates the UI to reflect the unmute state.
+ *
+ * - Sets the `mute` variable to `false` and stores it in `localStorage` so the unmute state persists across sessions.
+ * - Changes the sound icon to an unmuted icon (`sound.svg`).
+ * - Updates the `onclick` attribute of the sound element to call the `muteIt()` function when clicked, allowing the user to mute the audio again.
+ *
+ * @returns {void}
  */
 function unMuteIt() {
   mute = false;
+  localStorage.setItem("mute", JSON.stringify(mute));
   document.getElementById("soundIMG").src = "img/background/sound.svg";
   document.getElementById("sound").setAttribute("onclick", "muteIt()");
 }

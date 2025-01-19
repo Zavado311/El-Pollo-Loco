@@ -93,4 +93,31 @@ class DrawableObject {
       this.imageCache[path] = img;
     });
   }
+
+  /**
+   * Resolves the image index based on the percentage and threshold values provided.
+   * The function compares the percentage with the provided thresholds and returns an index corresponding to the highest threshold the percentage meets.
+   *
+   * @param {number} fv - The threshold for the highest index (5).
+   * @param {number} sv - The threshold for the second index (4).
+   * @param {number} tv - The threshold for the third index (3).
+   * @param {number} fourv - The threshold for the fourth index (2).
+   * @param {number} fivev - The threshold for the fifth index (1).
+   * @returns {number} - The image index corresponding to the percentage and threshold values.
+   */
+  resolveImageIndex(fv, sv, tv, fourv, fivev) {
+    if (this.percentage >= fv) {
+      return 5;
+    } else if (this.percentage >= sv) {
+      return 4;
+    } else if (this.percentage >= tv) {
+      return 3;
+    } else if (this.percentage >= fourv) {
+      return 2;
+    } else if (this.percentage >= fivev) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 }

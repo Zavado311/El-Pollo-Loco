@@ -25,32 +25,18 @@ class StatusBarCoins extends DrawableObject {
   }
 
   /**
-   * Sets the coins' status percentage and updates the displayed image.
-   * @param {number} percentage - The amount to increase the coin percentage (positive or negative).
+   * Increases the percentage value and updates the image based on the new percentage.
+   *
+   * - The function increments the current percentage by the given `percentage` value.
+   * - It then calculates the correct image path by calling the `resolveImageIndex()` function with predefined thresholds.
+   * - The calculated image path is used to update the `img` property with the corresponding image from the `imageCache`.
+   *
+   * @param {number} percentage - The value to increment the current percentage by.
+   * @returns {void}
    */
   setPercentageCoins(percentage) {
     this.percentage += percentage;
-    let path = this.IMAGES[this.resolveImageIndex()];
+    let path = this.IMAGES[super.resolveImageIndex(50, 40, 30, 20, 10)];
     this.img = this.imageCache[path];
-  }
-
-  /**
-   * Resolves the image index based on the current coin percentage.
-   * @returns {number} The index of the image to display based on the percentage.
-   */
-  resolveImageIndex() {
-    if (this.percentage >= 50) {
-      return 5;
-    } else if (this.percentage >= 40) {
-      return 4;
-    } else if (this.percentage >= 30) {
-      return 3;
-    } else if (this.percentage >= 20) {
-      return 2;
-    } else if (this.percentage >= 10) {
-      return 1;
-    } else {
-      return 0;
-    }
   }
 }
